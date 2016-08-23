@@ -1,0 +1,35 @@
+
+Intense 8.x-1.0-dev, 2016-05-09
+-------------------------------
+- Removed deprecated intense_preprocess_slick_media().
+- Removed intense_preprocess_slick_image() for template_preprocess_blazy().
+
+Intense 8.x-1.0-dev, 2016-04-11
+-------------------------------
+- Removed dependency on image.
+
+Intense 8.x-1.0-dev, 2016-04-04
+-------------------------------
+- Added ESLint files.
+- Added Blazy formatter supports.
+
+Intense 8.x-1.0-dev, 2016-04-03
+-------------------------------
+- Updated to reflect slick_media.module > 8.x-1.0-alpha4.
+
+Intense 8.x-1.0-dev, 2016-03-28
+-------------------------------
+- Added empty_option.
+- Fixed for Slick integration and intense URL.
+
+Intense 8.x-1.0-dev, 2016-03-24
+-------------------------------
+- Cleaned up and a couple of fixes.
+
+Intense 8.x-1.0-dev, 2016-02-11
+-------------------------------
+- Fixed for intense_header.
+
+Intense 8.x-1.0-dev, 2016-01-19
+-------------------------------
+Initial commit.

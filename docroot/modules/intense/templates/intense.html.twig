@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a formatted intense image field.
+ *
+ * Available variables:
+ * - image: A collection of image data.
+ * - image_style: An optional image style.
+ * - settings: An array of settings. 
+ *
+ * @see template_preprocess_intense()
+ *
+ * @ingroup themeable
+ */
+#}
+{% spaceless %}
+{{ image }}
+{{ settings.icon }}
+{% endspaceless %}

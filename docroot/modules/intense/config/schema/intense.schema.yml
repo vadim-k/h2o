@@ -1,0 +1,32 @@
+# Schema for configuration files of the Intense image module.
+
+intense_base:
+  type: mapping
+  label: 'Intense image base display format settings'
+  mapping:
+    intense_style:
+      type: string
+      label: 'Intense image style'
+    intense_icon:
+      type: boolean
+      label: 'Use Intense icon'
+
+field.formatter.settings.intense:
+  type: intense_base
+  label: 'Intense image display format settings'
+  mapping:
+    intense_header:
+      type: string
+    image_style:
+      type: string
+      label: 'Content image style'
+    caption:
+      type: sequence
+      label: 'Captions'
+      sequence:
+        - type: string
+          label: 'Caption'
+    intense_caption:
+      type: boolean
+      label: 'Use Intense caption'
+

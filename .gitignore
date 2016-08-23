@@ -1,0 +1,30 @@
+# Ignore OS X Generated Files
+.DS_Store
+
+# Ignore install.php in-case we accidently commit it.
+docroot/install.php
+
+# Ignore eclipse project settings
+.buildpath
+.settings
+.project
+
+# Ignore other code-editor project settings
+.phpintel
+/nbproject/private
+sftp-config.json
+.idea
+*.iml
+
+# Exclude local docker-compse.yml
+docker-compose.yml
+mmdb
+
+# Ignore .orig files
+*.orig
+
+# Ignore sass cache files
+.sass-cache
+
+# Ignore sublime text cache files
+.fuse*

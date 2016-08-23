@@ -1,0 +1,47 @@
+/**
+ * @file
+ */
+
+.intense {
+  cursor: crosshair;
+}
+
+.intense.loading {
+  cursor: wait;
+}
+
+.intense-wrapper {
+  position: relative;
+}
+
+.intense--icon {
+  background-color: #000;
+  background-color: rgba(0, 0, 0, .6);
+  bottom: 15px;
+  color: #fff;
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  position: absolute;
+  right: 15px;
+  text-align: center;
+  width: 32px;
+  z-index: 9;
+  -webkit-transition: background-color  1s ease-in-out 0.2s;
+  transition: background-color  1s ease-in-out 0.2s;
+}
+
+.intense--icon:hover {
+  background-color: #000;
+}
+
+.intense--icon::before {
+  content: '\1f50d';
+  display: block;
+}
+
+/* To avoid dropping icon, adjust accordingly */
+.intense-wrapper img,
+.field--type-image .intense-wrapper img {
+  margin-bottom: 0;
+}

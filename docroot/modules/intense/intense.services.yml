@@ -1,0 +1,6 @@
+services:
+  intense.manager:
+    class: Drupal\intense\IntenseManager
+
+  intense.admin:
+    class: Drupal\intense\IntenseAdmin

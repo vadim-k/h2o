@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Provides Intense images integration.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\intense\IntenseManager;
+
+/**
+ * Implements hook_theme().
+ */
+function intense_theme() {
+  return [
+    'intense' => [
+      'render element' => 'element',
+      'file' => 'intense.theme.inc',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function intense_field_formatter_info_alter(array &$info) {
+  if (isset($info['blazy'])) {
+    $info['blazy']['class'] = '\Drupal\intense\IntenseBlazy';
+  }
+  if (isset($info['slick_image'])) {
+    $info['slick_image']['class'] = '\Drupal\intense\IntenseSlickImage';
+  }
+  if (isset($info['slick_media'])) {
+    $info['slick_media']['class'] = '\Drupal\intense\IntenseSlickMedia';
+  }
+}
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function intense_config_schema_info_alter(&$definitions) {
+  foreach (['blazy_base', 'slick_image', 'slick_media'] as $type) {
+    if (isset($definitions[$type])) {
+      foreach (['caption', 'header', 'icon', 'style'] as $key) {
+        $definitions[$type]['mapping']['intense_' . $key]['type'] = in_array($key, ['header', 'style']) ? 'string' : 'boolean';
+      }
+    }
+  }
+}
+
+/**
+ * Overrides variables for blazy.html.twig templates.
+ */
+function intense_preprocess_blazy(&$variables) {
+  IntenseManager::addAttributes($variables);
+}
+
+/**
+ * Implements hook_help().
+ */
+function intense_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.intense':
+      return check_markup(file_get_contents(dirname(__FILE__) . "/README.txt"));
+  }
+}
