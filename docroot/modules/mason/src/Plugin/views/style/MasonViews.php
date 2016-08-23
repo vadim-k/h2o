@@ -1,9 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\Plugin\views\style\MasonViews.
+ */
+
 namespace Drupal\mason\Plugin\views\style;
 
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\blazy\Blazy;
 use Drupal\blazy\BlazyManagerInterface;
 use Drupal\blazy\Dejavu\BlazyDefault;
 use Drupal\blazy\Dejavu\BlazyStylePluginBase;
@@ -72,6 +78,10 @@ class MasonViews extends BlazyStylePluginBase {
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     $fields     = ['captions', 'layouts', 'images', 'links', 'titles', 'classes'];
     $definition = $this->getDefinedFieldOptions($fields);
+
+    foreach (['background', 'caches', 'fieldable_form', 'id', 'vanilla'] as $key) {
+      $definition[$key] = TRUE;
+    }
 
     $this->admin()->buildSettingsForm($form, $definition);
 

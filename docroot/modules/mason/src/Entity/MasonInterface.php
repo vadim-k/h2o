@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\Entity\MasonInterface.
+ */
+
 namespace Drupal\mason\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;

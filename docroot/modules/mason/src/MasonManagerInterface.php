@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\MasonManagerInterface.
+ */
+
 namespace Drupal\mason;
 
 /**
