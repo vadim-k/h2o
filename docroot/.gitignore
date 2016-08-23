@@ -18,6 +18,8 @@ vendor
 sites/*/settings*.php
 sites/*/services*.yml
 
+sites/*/local.development.services.yml
+
 # Ignore paths that contain user-generated content.
 sites/*/files
 sites/*/private
