@@ -1,0 +1,756 @@
+diff --git a//config/schema/mason.schema.yml b//config/schema/mason.schema.yml
+index 744381b..1c0d35c 100644
+--- a//config/schema/mason.schema.yml
++++ b//config/schema/mason.schema.yml
+@@ -113,3 +113,13 @@ views.style.mason:
+     id:
+       type: string
+       label: 'Mason ID'
++
++# Mason image base settings.
++mason_image:
++  type: mason_base
++  label: 'Mason image display format settings'
++
++# The Mason image formatter settings.
++field.formatter.settings.mason_image:
++  type: mason_image
++  label: 'Mason image display format settings'
+diff --git a//mason.install b//mason.install
+new file mode 100644
+index 0000000..458cf39
+--- /dev/null
++++ b//mason.install
+@@ -0,0 +1,25 @@
++<?php
++/**
++ * Add Mason image base and formatter settings to the default configuration for mason.module.
++ */
++function mason_update_8001() {
++  $config_factory = \Drupal::configFactory();
++  $config = $config_factory->getEditable('mason.configuration');
++  $config->set(
++    'mason_image', [
++      'type' => 'mason_base',
++      'label' => 'Mason image display format settings',
++    ],
++    'field', [
++      'formatter' => [
++        'settings' => [
++          'mason_image' => [
++            'type' => 'mason_image',
++            'label' => 'Mason image display format settings',
++          ],
++        ],
++      ],
++    ]
++  );
++  $config->save(TRUE);
++}
+diff --git a//mason.module b//mason.module
+index a3c65bf..5377ad2 100644
+--- a//mason.module
++++ b//mason.module
+@@ -12,7 +12,7 @@
+  */
+ function mason_theme() {
+   $themes = [];
+-  foreach (array('mason', 'box') as $item) {
++  foreach (array('mason', 'box', 'image') as $item) {
+     $key = $item == 'mason' ? 'mason' : 'mason_' . $item;
+     $themes[$key] = [
+       'render element' => 'element',
+diff --git a//mason.services.yml b//mason.services.yml
+index 036d529..fb93d8e 100644
+--- a//mason.services.yml
++++ b//mason.services.yml
+@@ -3,6 +3,10 @@ services:
+     class: Drupal\mason\MasonManager
+     parent: blazy.manager.base
+ 
++  mason.formatter:
++    class: Drupal\mason\MasonFormatter
++    parent: blazy.formatter.manager
++
+   mason.admin:
+     class: Drupal\mason\Form\MasonAdmin
+     arguments: ['@blazy.admin.extended', '@mason.manager']
+diff --git a//src/Entity/Mason.php b//src/Entity/Mason.php
+index c3f0527..74c7d8c 100644
+--- a//src/Entity/Mason.php
++++ b//src/Entity/Mason.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\Entity\Mason.
++ */
++
+ namespace Drupal\mason\Entity;
+ 
+ use Drupal\Component\Utility\NestedArray;
+diff --git a//src/Entity/MasonInterface.php b//src/Entity/MasonInterface.php
+index b1b1e10..5a0bab0 100644
+--- a//src/Entity/MasonInterface.php
++++ b//src/Entity/MasonInterface.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\Entity\MasonInterface.
++ */
++
+ namespace Drupal\mason\Entity;
+ 
+ use Drupal\Core\Config\Entity\ConfigEntityInterface;
+diff --git a//src/Form/MasonAdmin.php b//src/Form/MasonAdmin.php
+index dc10433..891f266 100644
+--- a//src/Form/MasonAdmin.php
++++ b//src/Form/MasonAdmin.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\Form\MasonAdmin.
++ */
++
+ namespace Drupal\mason\Form;
+ 
+ use Drupal\Core\Url;
+@@ -66,13 +71,18 @@ public function buildSettingsForm(array &$form, $definition = []) {
+       'skins'      => $this->getSkinOptions(),
+     ];
+ 
+-    foreach (['background', 'caches', 'fieldable_form', 'id', 'vanilla'] as $key) {
+-      $definition[$key] = TRUE;
+-    }
+-
+     $definition['layouts'] = isset($definition['layouts']) ? array_merge($this->getLayoutOptions(), $definition['layouts']) : $this->getLayoutOptions();
+ 
+     $this->openingForm($form, $definition);
++
++    if (isset($definition['image_style_form']) && !isset($form['image_style'])) {
++      $this->imageStyleForm($form, $definition);
++    }
++
++    if (isset($definition['breakpoints'])) {
++      $this->blazyAdmin->breakpointsForm($form, $definition);
++    }
++
+     $this->mainForm($form, $definition);
+     $this->closingForm($form, $definition);
+   }
+@@ -93,6 +103,19 @@ public function openingForm(array &$form, $definition = []) {
+   }
+ 
+   /**
++   * Returns the image formatter form elements.
++   */
++  public function imageStyleForm(array &$form, $definition = []) {
++    $definition['ratios'] = TRUE;
++
++    if (!isset($form['image_style'])) {
++      $this->blazyAdmin->imageStyleForm($form, $definition);
++    }
++
++    $form['image_style']['#description'] = t('The main image style. Ignored if Breakpoints are provided, use smaller image style here instead. Otherwise this is the only image displayed. If Slick media module installed, this determines iframe sizes to have various iframe dimensions with just a single file entity view mode, relevant for a mix of image and multimedia to get a consistent display.');
++  }
++
++  /**
+    * Returns the main form elements.
+    */
+   public function mainForm(array &$form, $definition = []) {
+@@ -145,4 +168,11 @@ public function getLayoutOptions() {
+     ];
+   }
+ 
++  /**
++   * Return the field formatter settings summary.
++   */
++  public function settingsSummary($plugin) {
++    return $this->blazyAdmin->settingsSummary($plugin);
++  }
++
+ }
+diff --git a//src/Form/MasonAdminInterface.php b//src/Form/MasonAdminInterface.php
+index 7e73fcc..d59f01a 100644
+--- a//src/Form/MasonAdminInterface.php
++++ b//src/Form/MasonAdminInterface.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\Form\MasonAdminInterface.
++ */
++
+ namespace Drupal\mason\Form;
+ 
+ /**
+diff --git a//src/MasonDefault.php b//src/MasonDefault.php
+new file mode 100644
+index 0000000..628d559
+--- /dev/null
++++ b//src/MasonDefault.php
+@@ -0,0 +1,26 @@
++<?php
++
++/**
++ * @file
++ * Contains \Drupal\mason\MasonDefault.
++ */
++
++namespace Drupal\mason;
++
++use Drupal\blazy\Dejavu\BlazyDefault;
++
++/**
++ * Defines shared plugin default settings for field formatter and Views style.
++ *
++ * @see FormatterBase::defaultSettings()
++ * @see StylePluginBase::defineOptions()
++ */
++class MasonDefault extends BlazyDefault {
++  /**
++   * Returns image-related field formatter and Views settings.
++   */
++  public static function imageSettings() {
++    return self::baseSettings() + parent::imageSettings();
++  }
++
++}
+diff --git a//src/MasonFormatter.php b//src/MasonFormatter.php
+new file mode 100644
+index 0000000..32224cb
+--- /dev/null
++++ b//src/MasonFormatter.php
+@@ -0,0 +1,67 @@
++<?php
++
++/**
++ * @file
++ * Contains \Drupal\mason\MasonFormatter.
++ */
++
++namespace Drupal\mason;
++
++use Drupal\mason\Entity\Mason;
++use Drupal\blazy\BlazyFormatterManager;
++
++/**
++ * Implements MasonFormatterInterface.
++ */
++class MasonFormatter extends BlazyFormatterManager implements MasonFormatterInterface {
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildSettings(array &$build = [], $items) {
++    $settings = &$build['settings'];
++
++    // Prepare integration with Blazy.
++    $settings['item_id']          = 'box';
++    $settings['namespace']        = 'mason';
++    $settings['theme_hook_image'] = isset($settings['theme_hook_image']) ? $settings['theme_hook_image'] : 'mason_image';
++
++    parent::buildSettings($build, $items);
++
++    $optionset_name             = $settings['optionset'] ?: 'default';
++    $build['optionset']         = Mason::load($optionset_name);
++    $settings['nav']            = !empty($settings['optionset_thumbnail']) && isset($items[1]);
++  }
++
++  /**
++   * Gets the thumbnail image.
++   */
++  public function getThumbnail($settings = []) {
++    if (empty($settings['uri'])) {
++      return [];
++    }
++    $thumbnail = [
++      '#theme'      => 'image_style',
++      '#style_name' => $settings['thumbnail_style'],
++      '#uri'        => $settings['uri'],
++    ];
++
++    foreach (['height', 'width', 'alt', 'title'] as $data) {
++      $thumbnail["#$data"] = isset($settings[$data]) ? $settings[$data] : NULL;
++    }
++    return $thumbnail;
++  }
++
++  /**
++   * Overrides BlazyFormatterManager::getMediaSwitch().
++   */
++  public function getMediaSwitch(array &$element = [], $settings = []) {
++    parent::getMediaSwitch($element, $settings);
++    $switch = $settings['media_switch'];
++
++    if (isset($element['#url_attributes'])) {
++      $element['#url_attributes']['class'] = ['mason__' . $switch, 'litebox'];
++    }
++  }
++
++}
+diff --git a//src/MasonFormatterInterface.php b//src/MasonFormatterInterface.php
+new file mode 100644
+index 0000000..65f17e6
+--- /dev/null
++++ b//src/MasonFormatterInterface.php
+@@ -0,0 +1,28 @@
++<?php
++
++/**
++ * @file
++ * Contains \Drupal\mason\MasonFormatterInterface.
++ */
++
++namespace Drupal\mason;
++
++/**
++ * Defines re-usable services and functions for mason field plugins.
++ */
++interface MasonFormatterInterface {
++
++  /**
++   * Returns the mason field formatter and custom coded settings.
++   *
++   * @param array $build
++   *   The array containing: settings, optionset.
++   * @param array $items
++   *   The items to prepare settings for.
++   *
++   * @return array
++   *   The combined settings of a mason field formatter.
++   */
++  public function buildSettings(array &$build = [], $items);
++
++}
+diff --git a//src/MasonManager.php b//src/MasonManager.php
+index a51f969..b9d9ad9 100644
+--- a//src/MasonManager.php
++++ b//src/MasonManager.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\MasonManager.
++ */
++
+ namespace Drupal\mason;
+ 
+ use Drupal\Core\Cache\Cache;
+@@ -30,7 +35,7 @@ public function getSkins() {
+    * Returns array of needed assets suitable for #attached for the given mason.
+    */
+   public function attach($attach = []) {
+-    $attach += ['skin' => FALSE, 'blazy' => TRUE];
++    $attach += ['skin' => FALSE, 'lazy' => 'blazy'];
+ 
+     $load = parent::attach($attach);
+ 
+diff --git a//src/MasonManagerInterface.php b//src/MasonManagerInterface.php
+index 93e67c8..292a3fc 100644
+--- a//src/MasonManagerInterface.php
++++ b//src/MasonManagerInterface.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\MasonManagerInterface.
++ */
++
+ namespace Drupal\mason;
+ 
+ /**
+diff --git a//src/MasonSkin.php b//src/MasonSkin.php
+index 0ed331d..33bbd64 100644
+--- a//src/MasonSkin.php
++++ b//src/MasonSkin.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\MasonSkin.
++ */
++
+ namespace Drupal\mason;
+ 
+ /**
+@@ -23,7 +28,7 @@ public function skins() {
+       ],
+       'selena' => [
+         'name' => t('Selena'),
+-        'provider' => 'mason',
++        'provider' => 'selena',
+         'css' => [
+           'theme' => [
+             'css/theme/mason.theme--selena.css' => [],
+diff --git a//src/MasonSkinInterface.php b//src/MasonSkinInterface.php
+index 70afb2e..17942d9 100644
+--- a//src/MasonSkinInterface.php
++++ b//src/MasonSkinInterface.php
+@@ -1,5 +1,10 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\MasonSkinInterface.
++ */
++
+ namespace Drupal\mason;
+ 
+ /**
+diff --git a//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php b//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
+new file mode 100644
+index 0000000..a06bfc4
+--- /dev/null
++++ b//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
+@@ -0,0 +1,66 @@
++<?php
++
++/**
++ * @file
++ * Contains \Drupal\mason\Plugin\Field\FieldFormatter\masonFormatterTrait.
++ */
++
++namespace Drupal\mason\Plugin\Field\FieldFormatter;
++
++use Drupal\Core\Field\FieldDefinitionInterface;
++
++/**
++ * A Trait common for mason formatters.
++ */
++trait MasonFormatterTrait {
++
++  /**
++   * The mason field formatter manager.
++   *
++   * @var \Drupal\mason\MasonFormatterInterface.
++   */
++  protected $formatter;
++
++  /**
++   * The mason field formatter manager.
++   *
++   * @var \Drupal\mason\MasonManagerInterface.
++   */
++  protected $manager;
++
++  /**
++   * Returns the mason field formatter service.
++   */
++  public function formatter() {
++    return $this->formatter;
++  }
++
++  /**
++   * Returns the mason service.
++   */
++  public function manager() {
++    return $this->manager;
++  }
++
++  /**
++   * Returns the mason admin service shortcut.
++   */
++  public function admin() {
++    return \Drupal::service('mason.admin');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function settingsSummary() {
++    return $this->admin()->settingsSummary($this);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function isApplicable(FieldDefinitionInterface $field_definition) {
++    return $field_definition->getFieldStorageDefinition()->isMultiple();
++  }
++
++}
+diff --git a//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php b//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
+new file mode 100644
+index 0000000..e816bd7
+--- /dev/null
++++ b//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
+@@ -0,0 +1,170 @@
++<?php
++
++/**
++ * @file
++ * Contains \Drupal\mason\Plugin\Field\FieldFormatter\MasonImageFormatter.
++ */
++
++namespace Drupal\mason\Plugin\Field\FieldFormatter;
++
++use Drupal\Component\Utility\Xss;
++use Drupal\Core\Field\FieldItemListInterface;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\Core\Field\FieldDefinitionInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\mason\MasonFormatterInterface;
++use Drupal\mason\MasonManagerInterface;
++use Drupal\mason\MasonDefault;
++use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatterBase;
++use Drupal\mason\Entity\Mason;
++
++/**
++ * Plugin implementation of the 'mason image' formatter.
++ *
++ * @FieldFormatter(
++ *   id = "mason_image",
++ *   label = @Translation("Mason"),
++ *   description = @Translation("Display the images as a perfect gapless grid of elements."),
++ *   field_types = {"image"},
++ * )
++ */
++class MasonImageFormatter extends ImageFormatterBase implements ContainerFactoryPluginInterface {
++  use MasonFormatterTrait;
++
++  /**
++   * Constructs a MasonImageFormatter instance.
++   */
++  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, MasonFormatterInterface $formatter, MasonManagerInterface $manager) {
++    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
++    $this->manager = $manager;
++    $this->formatter = $formatter;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $plugin_id,
++      $plugin_definition,
++      $configuration['field_definition'],
++      $configuration['settings'],
++      $configuration['label'],
++      $configuration['view_mode'],
++      $configuration['third_party_settings'],
++      $container->get('mason.formatter'),
++      $container->get('mason.manager')
++    );
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function defaultSettings() {
++    $settings = MasonDefault::imageSettings();
++    return $settings;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function viewElements(FieldItemListInterface $items, $langcode) {
++    $files = $this->getEntitiesToView($items, $langcode);
++
++    $elements = [];
++
++    // Early opt-out if the field is empty.
++    if (empty($files)) {
++      return $elements;
++    }
++
++    // Collects specific settings to this formatter.
++    $settings = $this->getSettings();
++    $build = ['settings' => $settings];
++
++    $this->formatter->buildSettings($build, $items);
++
++    // Build the elements.
++    $this->buildElements($build, $files);
++
++    $elements = $this->manager()->build($build);
++
++    return $elements;
++  }
++
++  /**
++   * Build the mason elements.
++   */
++  public function buildElements(array &$build = [], $files) {
++    $settings = &$build['settings'];
++    $item_id  = $settings['item_id'];
++
++    foreach ($files as $delta => $file) {
++      /* @var Drupal\image\Plugin\Field\FieldType\ImageItem $item */
++      $item = $file->_referringItem;
++
++      $settings['delta']     = $delta;
++      $settings['file_tags'] = $file->getCacheTags();
++      $settings['type']      = 'image';
++      $settings['uri']       = ($entity = $item->entity) && empty($item->uri) ? $entity->getFileUri() : $item->uri;
++
++      $element = ['item' => $item, 'settings' => $settings];
++
++      if (!empty($settings['caption'])) {
++        foreach ($settings['caption'] as $caption) {
++          $element['caption'][$caption] = empty($item->$caption) ? [] : ['#markup' => Xss::filterAdmin($item->$caption)];
++        }
++      }
++
++      // Image with responsive image, lazyLoad, and lightbox supports.
++      $element['delta'] = $delta;
++      $element['image'] = [];
++      $element[$item_id] = $this->formatter->getImage($element);
++      $build['items'][$delta] = $element;
++ 
++      unset($build['items'][$delta]['item']);
++
++      if ($settings['nav']) {
++        // Thumbnail usages: asNavFor pagers, dot, arrows, photobox thumbnails.
++        $element[$item_id] = empty($settings['thumbnail_style']) ? [] : $this->formatter->getThumbnail($element['settings']);
++
++        $caption = $settings['thumbnail_caption'];
++        $element['caption'] = empty($item->$caption) ? [] : ['#markup' => Xss::filterAdmin($item->$caption)];
++
++        $build['thumb']['items'][$delta] = $element;
++      }
++      unset($element);
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function settingsForm(array $form, FormStateInterface $form_state) {
++    $element    = [];
++    $definition = $this->getScopedFormElements();
++
++    $definition['_views'] = isset($form['field_api_classes']);
++
++    $this->admin()->buildSettingsForm($element, $definition);
++    return $element;
++  }
++
++  /**
++   * Defines the scope for the form elements.
++   */
++  public function getScopedFormElements() {
++    $captions = ['title' => t('Title'), 'alt' => t('Alt')];
++    return [
++      'captions'          => $captions,
++      'field_name'        => $this->fieldDefinition->getName(),
++      'image_style_form'  => TRUE,
++      'media_switch_form' => TRUE,
++      'settings'          => $this->getSettings(),
++      'thumb_captions'    => $captions,
++      'nav'               => TRUE,
++    ];
++  }
++
++}
+diff --git a//src/Plugin/views/style/MasonViews.php b//src/Plugin/views/style/MasonViews.php
+index 75cc880..d9267ec 100644
+--- a//src/Plugin/views/style/MasonViews.php
++++ b//src/Plugin/views/style/MasonViews.php
+@@ -1,9 +1,15 @@
+ <?php
+ 
++/**
++ * @file
++ * Contains \Drupal\mason\Plugin\views\style\MasonViews.
++ */
++
+ namespace Drupal\mason\Plugin\views\style;
+ 
+ use Drupal\Core\Form\FormStateInterface;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\blazy\Blazy;
+ use Drupal\blazy\BlazyManagerInterface;
+ use Drupal\blazy\Dejavu\BlazyDefault;
+ use Drupal\blazy\Dejavu\BlazyStylePluginBase;
+@@ -73,6 +79,10 @@ public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+     $fields     = ['captions', 'layouts', 'images', 'links', 'titles', 'classes'];
+     $definition = $this->getDefinedFieldOptions($fields);
+ 
++    foreach (['background', 'caches', 'fieldable_form', 'id', 'vanilla'] as $key) {
++      $definition[$key] = TRUE;
++    }
++
+     $this->admin()->buildSettingsForm($form, $definition);
+ 
+     $title = '<p class="form__header form__title">';
+diff --git a//templates/mason-image.html.twig b//templates/mason-image.html.twig
+new file mode 100644
+index 0000000..1ec37ac
+--- /dev/null
++++ b//templates/mason-image.html.twig
+@@ -0,0 +1,44 @@
++{#
++/**
++ * @file
++ * Default theme implementation to display a lazyloaded, or responsive image.
++ *
++ * The Mason image supports core image, and responsive image.
++ *
++ * Available variables:
++ *   - image: A collection of image data.
++ *   - attributes: An array of attributes.
++ *   - url: An optional URL the image can be linked to, can be any of
++ *       entity URLs, when using Colorbox/Photobox, or Link to content.
++ *   - settings: An array containing the given settings.
++ *
++ * @see template_preprocess_mason_image().
++ *
++ * @ingroup themeable
++ */
++#}
++{%
++  set classes = [
++    'media',
++    settings.lazy ? 'media--loading',
++    settings.type ? 'media--' ~ settings.type,
++    settings.ratio ? 'media--ratio media--ratio--' ~ settings.ratio,
++    settings.media_switch ? 'media--switch media--switch--' ~ settings.media_switch|clean_class,
++    settings.responsive_image_style_id ? 'media--responsive'
++  ]
++%}
++
++{% set media %}
++  <div{{ attributes.addClass(classes) }}>
++    {{ image }}
++    {{ settings.icon }}
++  </div>
++{% endset %}
++
++{% spaceless %}
++  {% if url and not settings.player %}
++    <a href="{{ url }}"{{ url_attributes }}>{{ media }}</a>
++  {% else %}
++    {{ media }}
++  {% endif %}
++{% endspaceless %}
+diff --git a//templates/mason.theme.inc b//templates/mason.theme.inc
+index 50e6e7a..e272163 100644
+--- a//templates/mason.theme.inc
++++ b//templates/mason.theme.inc
+@@ -85,3 +85,10 @@ function template_preprocess_mason_box(&$variables) {
+   $variables['fillers'] = !empty($settings['fillers']) && ($variables['delta'] > $settings['fillers']);
+   $variables['content_attributes'] = new Attribute($content_attributes);
+ }
++
++/**
++ * Prepares variables for mason-image.html.twig template.
++ */
++function template_preprocess_mason_image(&$variables) {
++  template_preprocess_blazy($variables);
++}
+-- 
+2.7.4
+
