@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\MasonManager.
+ */
+
 namespace Drupal\mason;
 
 use Drupal\Core\Cache\Cache;
@@ -30,7 +35,7 @@ class MasonManager extends BlazyManagerBase implements BlazyManagerInterface, Ma
    * Returns array of needed assets suitable for #attached for the given mason.
    */
   public function attach($attach = []) {
-    $attach += ['skin' => FALSE, 'blazy' => TRUE];
+    $attach += ['skin' => FALSE, 'lazy' => 'blazy'];
 
     $load = parent::attach($attach);
 

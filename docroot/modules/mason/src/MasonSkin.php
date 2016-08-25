@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\MasonSkin.
+ */
+
 namespace Drupal\mason;
 
 /**
@@ -23,7 +28,7 @@ class MasonSkin implements MasonSkinInterface {
       ],
       'selena' => [
         'name' => t('Selena'),
-        'provider' => 'mason',
+        'provider' => 'selena',
         'css' => [
           'theme' => [
             'css/theme/mason.theme--selena.css' => [],

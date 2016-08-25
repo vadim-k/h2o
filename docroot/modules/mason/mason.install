@@ -1,0 +1,25 @@
+<?php
+/**
+ * Add Mason image base and formatter settings to the default configuration for mason.module.
+ */
+function mason_update_8001() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('mason.configuration');
+  $config->set(
+    'mason_image', [
+      'type' => 'mason_base',
+      'label' => 'Mason image display format settings',
+    ],
+    'field', [
+      'formatter' => [
+        'settings' => [
+          'mason_image' => [
+            'type' => 'mason_image',
+            'label' => 'Mason image display format settings',
+          ],
+        ],
+      ],
+    ]
+  );
+  $config->save(TRUE);
+}

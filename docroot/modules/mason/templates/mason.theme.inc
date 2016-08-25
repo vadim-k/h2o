@@ -85,3 +85,10 @@ function template_preprocess_mason_box(&$variables) {
   $variables['fillers'] = !empty($settings['fillers']) && ($variables['delta'] > $settings['fillers']);
   $variables['content_attributes'] = new Attribute($content_attributes);
 }
+
+/**
+ * Prepares variables for mason-image.html.twig template.
+ */
+function template_preprocess_mason_image(&$variables) {
+  template_preprocess_blazy($variables);
+}

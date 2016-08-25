@@ -3,6 +3,10 @@ services:
     class: Drupal\mason\MasonManager
     parent: blazy.manager.base
 
+  mason.formatter:
+    class: Drupal\mason\MasonFormatter
+    parent: blazy.formatter.manager
+
   mason.admin:
     class: Drupal\mason\Form\MasonAdmin
     arguments: ['@blazy.admin.extended', '@mason.manager']

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\mason\Form\MasonAdminInterface.
+ */
+
 namespace Drupal\mason\Form;
 
 /**
