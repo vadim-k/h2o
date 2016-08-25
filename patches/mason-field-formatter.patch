@@ -1,7 +1,7 @@
-diff --git a//config/schema/mason.schema.yml b//config/schema/mason.schema.yml
+diff --git a/config/schema/mason.schema.yml b/config/schema/mason.schema.yml
 index 744381b..1c0d35c 100644
---- a//config/schema/mason.schema.yml
-+++ b//config/schema/mason.schema.yml
+--- a/config/schema/mason.schema.yml
++++ b/config/schema/mason.schema.yml
 @@ -113,3 +113,13 @@ views.style.mason:
      id:
        type: string
@@ -16,11 +16,11 @@ index 744381b..1c0d35c 100644
 +field.formatter.settings.mason_image:
 +  type: mason_image
 +  label: 'Mason image display format settings'
-diff --git a//mason.install b//mason.install
+diff --git a/mason.install b/mason.install
 new file mode 100644
 index 0000000..458cf39
 --- /dev/null
-+++ b//mason.install
++++ b/mason.install
 @@ -0,0 +1,25 @@
 +<?php
 +/**
@@ -47,10 +47,10 @@ index 0000000..458cf39
 +  );
 +  $config->save(TRUE);
 +}
-diff --git a//mason.module b//mason.module
+diff --git a/mason.module b/mason.module
 index a3c65bf..5377ad2 100644
---- a//mason.module
-+++ b//mason.module
+--- a/mason.module
++++ b/mason.module
 @@ -12,7 +12,7 @@
   */
  function mason_theme() {
@@ -60,10 +60,10 @@ index a3c65bf..5377ad2 100644
      $key = $item == 'mason' ? 'mason' : 'mason_' . $item;
      $themes[$key] = [
        'render element' => 'element',
-diff --git a//mason.services.yml b//mason.services.yml
+diff --git a/mason.services.yml b/mason.services.yml
 index 036d529..fb93d8e 100644
---- a//mason.services.yml
-+++ b//mason.services.yml
+--- a/mason.services.yml
++++ b/mason.services.yml
 @@ -3,6 +3,10 @@ services:
      class: Drupal\mason\MasonManager
      parent: blazy.manager.base
@@ -75,10 +75,10 @@ index 036d529..fb93d8e 100644
    mason.admin:
      class: Drupal\mason\Form\MasonAdmin
      arguments: ['@blazy.admin.extended', '@mason.manager']
-diff --git a//src/Entity/Mason.php b//src/Entity/Mason.php
+diff --git a/src/Entity/Mason.php b/src/Entity/Mason.php
 index c3f0527..74c7d8c 100644
---- a//src/Entity/Mason.php
-+++ b//src/Entity/Mason.php
+--- a/src/Entity/Mason.php
++++ b/src/Entity/Mason.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -90,10 +90,10 @@ index c3f0527..74c7d8c 100644
  namespace Drupal\mason\Entity;
  
  use Drupal\Component\Utility\NestedArray;
-diff --git a//src/Entity/MasonInterface.php b//src/Entity/MasonInterface.php
+diff --git a/src/Entity/MasonInterface.php b/src/Entity/MasonInterface.php
 index b1b1e10..5a0bab0 100644
---- a//src/Entity/MasonInterface.php
-+++ b//src/Entity/MasonInterface.php
+--- a/src/Entity/MasonInterface.php
++++ b/src/Entity/MasonInterface.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -105,10 +105,10 @@ index b1b1e10..5a0bab0 100644
  namespace Drupal\mason\Entity;
  
  use Drupal\Core\Config\Entity\ConfigEntityInterface;
-diff --git a//src/Form/MasonAdmin.php b//src/Form/MasonAdmin.php
+diff --git a/src/Form/MasonAdmin.php b/src/Form/MasonAdmin.php
 index dc10433..891f266 100644
---- a//src/Form/MasonAdmin.php
-+++ b//src/Form/MasonAdmin.php
+--- a/src/Form/MasonAdmin.php
++++ b/src/Form/MasonAdmin.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -175,10 +175,10 @@ index dc10433..891f266 100644
 +  }
 +
  }
-diff --git a//src/Form/MasonAdminInterface.php b//src/Form/MasonAdminInterface.php
+diff --git a/src/Form/MasonAdminInterface.php b/src/Form/MasonAdminInterface.php
 index 7e73fcc..d59f01a 100644
---- a//src/Form/MasonAdminInterface.php
-+++ b//src/Form/MasonAdminInterface.php
+--- a/src/Form/MasonAdminInterface.php
++++ b/src/Form/MasonAdminInterface.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -190,11 +190,11 @@ index 7e73fcc..d59f01a 100644
  namespace Drupal\mason\Form;
  
  /**
-diff --git a//src/MasonDefault.php b//src/MasonDefault.php
+diff --git a/src/MasonDefault.php b/src/MasonDefault.php
 new file mode 100644
 index 0000000..628d559
 --- /dev/null
-+++ b//src/MasonDefault.php
++++ b/src/MasonDefault.php
 @@ -0,0 +1,26 @@
 +<?php
 +
@@ -222,11 +222,11 @@ index 0000000..628d559
 +  }
 +
 +}
-diff --git a//src/MasonFormatter.php b//src/MasonFormatter.php
+diff --git a/src/MasonFormatter.php b/src/MasonFormatter.php
 new file mode 100644
 index 0000000..32224cb
 --- /dev/null
-+++ b//src/MasonFormatter.php
++++ b/src/MasonFormatter.php
 @@ -0,0 +1,67 @@
 +<?php
 +
@@ -251,7 +251,7 @@ index 0000000..32224cb
 +  public function buildSettings(array &$build = [], $items) {
 +    $settings = &$build['settings'];
 +
-+    // Prepare integration with Blazy.
++    / Prepare integration with Blazy.
 +    $settings['item_id']          = 'box';
 +    $settings['namespace']        = 'mason';
 +    $settings['theme_hook_image'] = isset($settings['theme_hook_image']) ? $settings['theme_hook_image'] : 'mason_image';
@@ -295,11 +295,11 @@ index 0000000..32224cb
 +  }
 +
 +}
-diff --git a//src/MasonFormatterInterface.php b//src/MasonFormatterInterface.php
+diff --git a/src/MasonFormatterInterface.php b/src/MasonFormatterInterface.php
 new file mode 100644
 index 0000000..65f17e6
 --- /dev/null
-+++ b//src/MasonFormatterInterface.php
++++ b/src/MasonFormatterInterface.php
 @@ -0,0 +1,28 @@
 +<?php
 +
@@ -329,10 +329,10 @@ index 0000000..65f17e6
 +  public function buildSettings(array &$build = [], $items);
 +
 +}
-diff --git a//src/MasonManager.php b//src/MasonManager.php
+diff --git a/src/MasonManager.php b/src/MasonManager.php
 index a51f969..b9d9ad9 100644
---- a//src/MasonManager.php
-+++ b//src/MasonManager.php
+--- a/src/MasonManager.php
++++ b/src/MasonManager.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -353,10 +353,10 @@ index a51f969..b9d9ad9 100644
  
      $load = parent::attach($attach);
  
-diff --git a//src/MasonManagerInterface.php b//src/MasonManagerInterface.php
+diff --git a/src/MasonManagerInterface.php b/src/MasonManagerInterface.php
 index 93e67c8..292a3fc 100644
---- a//src/MasonManagerInterface.php
-+++ b//src/MasonManagerInterface.php
+--- a/src/MasonManagerInterface.php
++++ b/src/MasonManagerInterface.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -368,10 +368,10 @@ index 93e67c8..292a3fc 100644
  namespace Drupal\mason;
  
  /**
-diff --git a//src/MasonSkin.php b//src/MasonSkin.php
+diff --git a/src/MasonSkin.php b/src/MasonSkin.php
 index 0ed331d..33bbd64 100644
---- a//src/MasonSkin.php
-+++ b//src/MasonSkin.php
+--- a/src/MasonSkin.php
++++ b/src/MasonSkin.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -392,10 +392,10 @@ index 0ed331d..33bbd64 100644
          'css' => [
            'theme' => [
              'css/theme/mason.theme--selena.css' => [],
-diff --git a//src/MasonSkinInterface.php b//src/MasonSkinInterface.php
+diff --git a/src/MasonSkinInterface.php b/src/MasonSkinInterface.php
 index 70afb2e..17942d9 100644
---- a//src/MasonSkinInterface.php
-+++ b//src/MasonSkinInterface.php
+--- a/src/MasonSkinInterface.php
++++ b/src/MasonSkinInterface.php
 @@ -1,5 +1,10 @@
  <?php
  
@@ -407,11 +407,11 @@ index 70afb2e..17942d9 100644
  namespace Drupal\mason;
  
  /**
-diff --git a//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php b//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
+diff --git a/src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php b/src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
 new file mode 100644
 index 0000000..a06bfc4
 --- /dev/null
-+++ b//src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
++++ b/src/Plugin/Field/FieldFormatter/MasonFormatterTrait.php
 @@ -0,0 +1,66 @@
 +<?php
 +
@@ -479,11 +479,11 @@ index 0000000..a06bfc4
 +  }
 +
 +}
-diff --git a//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php b//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
+diff --git a/src/Plugin/Field/FieldFormatter/MasonImageFormatter.php b/src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
 new file mode 100644
 index 0000000..e816bd7
 --- /dev/null
-+++ b//src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/MasonImageFormatter.php
 @@ -0,0 +1,170 @@
 +<?php
 +
@@ -561,18 +561,18 @@ index 0000000..e816bd7
 +
 +    $elements = [];
 +
-+    // Early opt-out if the field is empty.
++    / Early opt-out if the field is empty.
 +    if (empty($files)) {
 +      return $elements;
 +    }
 +
-+    // Collects specific settings to this formatter.
++    / Collects specific settings to this formatter.
 +    $settings = $this->getSettings();
 +    $build = ['settings' => $settings];
 +
 +    $this->formatter->buildSettings($build, $items);
 +
-+    // Build the elements.
++    / Build the elements.
 +    $this->buildElements($build, $files);
 +
 +    $elements = $this->manager()->build($build);
@@ -604,16 +604,16 @@ index 0000000..e816bd7
 +        }
 +      }
 +
-+      // Image with responsive image, lazyLoad, and lightbox supports.
++      / Image with responsive image, lazyLoad, and lightbox supports.
 +      $element['delta'] = $delta;
 +      $element['image'] = [];
 +      $element[$item_id] = $this->formatter->getImage($element);
 +      $build['items'][$delta] = $element;
-+ 
++
 +      unset($build['items'][$delta]['item']);
 +
 +      if ($settings['nav']) {
-+        // Thumbnail usages: asNavFor pagers, dot, arrows, photobox thumbnails.
++        / Thumbnail usages: asNavFor pagers, dot, arrows, photobox thumbnails.
 +        $element[$item_id] = empty($settings['thumbnail_style']) ? [] : $this->formatter->getThumbnail($element['settings']);
 +
 +        $caption = $settings['thumbnail_caption'];
@@ -655,10 +655,10 @@ index 0000000..e816bd7
 +  }
 +
 +}
-diff --git a//src/Plugin/views/style/MasonViews.php b//src/Plugin/views/style/MasonViews.php
+diff --git a/src/Plugin/views/style/MasonViews.php b/src/Plugin/views/style/MasonViews.php
 index 75cc880..d9267ec 100644
---- a//src/Plugin/views/style/MasonViews.php
-+++ b//src/Plugin/views/style/MasonViews.php
+--- a/src/Plugin/views/style/MasonViews.php
++++ b/src/Plugin/views/style/MasonViews.php
 @@ -1,9 +1,15 @@
  <?php
  
@@ -686,11 +686,11 @@ index 75cc880..d9267ec 100644
      $this->admin()->buildSettingsForm($form, $definition);
  
      $title = '<p class="form__header form__title">';
-diff --git a//templates/mason-image.html.twig b//templates/mason-image.html.twig
+diff --git a/templates/mason-image.html.twig b/templates/mason-image.html.twig
 new file mode 100644
 index 0000000..1ec37ac
 --- /dev/null
-+++ b//templates/mason-image.html.twig
++++ b/templates/mason-image.html.twig
 @@ -0,0 +1,44 @@
 +{#
 +/**
@@ -736,10 +736,10 @@ index 0000000..1ec37ac
 +    {{ media }}
 +  {% endif %}
 +{% endspaceless %}
-diff --git a//templates/mason.theme.inc b//templates/mason.theme.inc
+diff --git a/templates/mason.theme.inc b/templates/mason.theme.inc
 index 50e6e7a..e272163 100644
---- a//templates/mason.theme.inc
-+++ b//templates/mason.theme.inc
+--- a/templates/mason.theme.inc
++++ b/templates/mason.theme.inc
 @@ -85,3 +85,10 @@ function template_preprocess_mason_box(&$variables) {
    $variables['fillers'] = !empty($settings['fillers']) && ($variables['delta'] > $settings['fillers']);
    $variables['content_attributes'] = new Attribute($content_attributes);
