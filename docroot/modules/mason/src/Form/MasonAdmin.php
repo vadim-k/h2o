@@ -3,6 +3,7 @@
 namespace Drupal\mason\Form;
 
 use Drupal\Core\Url;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Component\Utility\Html;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\blazy\Form\BlazyAdminInterface;
@@ -12,6 +13,7 @@ use Drupal\mason\MasonManagerInterface;
  * Provides resusable admin functions or form elements.
  */
 class MasonAdmin implements MasonAdminInterface {
+  use StringTranslationTrait;
 
   /**
    * The blazy admin service.
@@ -88,8 +90,8 @@ class MasonAdmin implements MasonAdminInterface {
       $this->blazyAdmin->openingForm($form, $definition);
     }
 
-    $form['skin']['#description'] = t('Skins allow various layouts with just CSS. Some options below depend on a skin. Leave empty to DIY. Or use hook_mason_skins_info() and implement \Drupal\mason\MasonSkinInterface to register ones.', [':url' => $readme]);
-    $form['background']['#description'] = t('If trouble with image sizes not filling the given box, check this to turn the image into CSS background instead. To assign different image style per grid/box, edit the working optionset.');
+    $form['skin']['#description'] = $this->t('Skins allow various layouts with just CSS. Some options below depend on a skin. Leave empty to DIY. Or use hook_mason_skins_info() and implement \Drupal\mason\MasonSkinInterface to register ones.', [':url' => $readme]);
+    $form['background']['#description'] = $this->t('If trouble with image sizes not filling the given box, check this to turn the image into CSS background instead. To assign different image style per grid/box, edit the working optionset.');
   }
 
   /**
@@ -102,9 +104,9 @@ class MasonAdmin implements MasonAdminInterface {
 
     $form['fillers'] = [
       '#type'        => 'select',
-      '#title'       => t('Filler start at'),
+      '#title'       => $this->t('Filler start at'),
       '#options'     => array_combine(range(1, 42), range(1, 42)),
-      '#description' => t('Index to mark contents as fillers. Contents starting from this value will be treated as fillers. Be sure the total Views rows are bigger than this. Mason uses fillers to fill in gaps. Fillers are elements that you can define or it will reuse elements within the grid. Leave it empty to disable fillers, and use Promoted option instead to control sizes.'),
+      '#description' => $this->t('Index to mark contents as fillers. Contents starting from this value will be treated as fillers. Be sure the total Views rows are bigger than this. Mason uses fillers to fill in gaps. Fillers are elements that you can define or it will reuse elements within the grid. Leave it empty to disable fillers, and use Promoted option instead to control sizes.'),
     ];
   }
 
@@ -139,9 +141,9 @@ class MasonAdmin implements MasonAdminInterface {
    */
   public function getLayoutOptions() {
     return [
-      'bottom' => t('Caption bottom'),
-      'center' => t('Caption center'),
-      'top'    => t('Caption top'),
+      'bottom' => $this->t('Caption bottom'),
+      'center' => $this->t('Caption center'),
+      'top'    => $this->t('Caption top'),
     ];
   }
 

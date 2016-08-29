@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason_ui\Form\MasonDeleteForm.
- */
-
 namespace Drupal\mason_ui\Form;
 
 use Drupal\Core\Url;

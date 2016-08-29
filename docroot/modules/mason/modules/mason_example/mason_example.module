@@ -25,6 +25,6 @@ function mason_example_mason_skins_info() {
 function mason_example_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.mason_example':
-      return check_markup(file_get_contents(dirname(__FILE__) . "/README.txt"));
+      return check_markup(file_get_contents(dirname(__FILE__) . '/README.txt'));
   }
 }

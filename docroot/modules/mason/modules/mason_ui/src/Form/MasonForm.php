@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason_ui\Form\MasonForm.
- */
-
 namespace Drupal\mason_ui\Form;
 
 use Drupal\Core\Url;
@@ -91,7 +86,6 @@ class MasonForm extends EntityForm {
     $options   = $mason->getOptions() ?: [];
     $readme    = Url::fromUri('base:' . $path . '/README.txt')->toString();
     $defaults  = Mason::load('default')->getOptions();
-    $slick     = FALSE;
     $admin_css = $this->manager->configLoad('admin_css', 'blazy.settings');
 
     $form['#attributes']['class'][] = 'form--mason';
@@ -137,7 +131,7 @@ class MasonForm extends EntityForm {
       '#collapsed'   => FALSE,
       '#title'       => $this->t('Options'),
       '#attributes'  => ['class' => ['details--settings', 'has-tooltip']],
-      '#description' => t('Mason is a jQuery plugin that helps you create a perfect grid with no gaps and no ragged edges. It Works by mapping elements in a grid, finding where gaps are and filling them in as a stone mason would do. Mason is not Masonry, Isotope, Packery, Gridilicious or any of those other grid plugins. It is for creating perfect grids. Do not use quotes manually.'),
+      '#description' => $this->t('Mason is a jQuery plugin that helps you create a perfect grid with no gaps and no ragged edges. It Works by mapping elements in a grid, finding where gaps are and filling them in as a stone mason would do. Mason is not Masonry, Isotope, Packery, Gridilicious or any of those other grid plugins. It is for creating perfect grids. Do not use quotes manually.'),
     ];
 
     $form['options']['debug'] = [
@@ -333,7 +327,7 @@ class MasonForm extends EntityForm {
 
     $excludes = ['container', 'details', 'item', 'hidden', 'submit'];
     foreach ($defaults as $name => $default) {
-      if ($slick) {
+      if ($admin_css) {
         if ($form['options'][$name]['#type'] == 'checkbox') {
           $form['options'][$name]['#field_suffix'] = '&nbsp;';
           $form['options'][$name]['#title_display'] = 'before';

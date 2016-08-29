@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason_ui\Controller\MasonListBuilder.
- */
-
 namespace Drupal\mason_ui\Controller;
 
 use Drupal\Component\Utility\Html;
@@ -66,11 +61,11 @@ class MasonListBuilder extends DraggableListBuilder {
    */
   public function buildHeader() {
     $header = array(
-      'label'    => t('Optionset'),
-      'gutter'   => t('Gutter'),
-      'layout'   => t('Layout'),
-      'promoted' => t('Promoted items'),
-      'ratio'    => t('Ratio'),
+      'label'    => $this->t('Optionset'),
+      'gutter'   => $this->t('Gutter'),
+      'layout'   => $this->t('Layout'),
+      'promoted' => $this->t('Promoted items'),
+      'ratio'    => $this->t('Ratio'),
     );
 
     return $header + parent::buildHeader();
@@ -94,11 +89,11 @@ class MasonListBuilder extends DraggableListBuilder {
     $operations = parent::getDefaultOperations($entity);
 
     if (isset($operations['edit'])) {
-      $operations['edit']['title'] = t('Configure');
+      $operations['edit']['title'] = $this->t('Configure');
     }
 
     $operations['duplicate'] = array(
-      'title'  => t('Duplicate'),
+      'title'  => $this->t('Duplicate'),
       'weight' => 15,
       'url'    => $entity->toUrl('duplicate-form'),
     );

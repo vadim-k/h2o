@@ -1,4 +1,9 @@
 
+Mason 8.x-1.0-dev, 2016-08-29
+-----------------------------
+- Fixed for unstyled admin optionset checkboxes.
+- A few cleanups.
+
 Mason 8.x-1.0-dev, 2016-07-15
 -----------------------------
 - #2755921 by Nikhilesh Gupta: getLabel() is deprecated.

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason_example\MasonExampleSkin.
- */
-
 namespace Drupal\mason_example;
 
 use Drupal\mason\MasonSkinInterface;
@@ -21,8 +16,7 @@ class MasonExampleSkin implements MasonSkinInterface {
     $path  = base_path() . drupal_get_path('module', 'mason_example');
     $skins = [
       'zoe' => [
-        'name' => t('X: Zoe'),
-        'description' => t('A sample skin for Mason.'),
+        'name' => 'X: Zoe',
         'provider' => 'mason_example',
         'css' => [
           'theme' => [

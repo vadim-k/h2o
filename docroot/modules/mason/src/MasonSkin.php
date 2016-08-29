@@ -13,7 +13,7 @@ class MasonSkin implements MasonSkinInterface {
   public function skins() {
     $skins = [
       'default' => [
-        'name' => t('Default'),
+        'name' => 'Default',
         'provider' => 'mason',
         'css' => [
           'theme' => [
@@ -22,14 +22,13 @@ class MasonSkin implements MasonSkinInterface {
         ],
       ],
       'selena' => [
-        'name' => t('Selena'),
+        'name' => 'Selena',
         'provider' => 'mason',
         'css' => [
           'theme' => [
             'css/theme/mason.theme--selena.css' => [],
           ],
         ],
-        'description' => t('Provide Selena skin.'),
       ],
     ];
 

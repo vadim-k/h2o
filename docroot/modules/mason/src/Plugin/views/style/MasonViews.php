@@ -79,7 +79,7 @@ class MasonViews extends BlazyStylePluginBase {
     $title .= $this->t('Check Vanilla mason for custom markups.<small>Otherwise mason markups are added. Add the supported fields to appear here.</small>');
     $title .= '</p>';
     $form['opening']['#markup'] = '<div class="form--mason form--slick form--views form--half form--vanilla has-tooltip">' . $title;
-    $form['image']['#description'] .= ' ' . t('Be sure to UNCHECK "Use field template" to have it work for Blazy lazyloading.');
+    $form['image']['#description'] .= ' ' . $this->t('Be sure to UNCHECK "Use field template" to have it work for Blazy lazyloading.');
   }
 
   /**

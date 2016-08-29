@@ -56,6 +56,6 @@ function mason_hook_info() {
 function mason_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.mason':
-      return check_markup(file_get_contents(dirname(__FILE__) . "/README.txt"));
+      return check_markup(file_get_contents(dirname(__FILE__) . '/README.txt'));
   }
 }
