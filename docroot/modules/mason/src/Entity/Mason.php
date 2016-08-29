@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason\Entity\Mason.
- */
-
 namespace Drupal\mason\Entity;
 
 use Drupal\Component\Utility\NestedArray;

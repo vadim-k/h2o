@@ -113,13 +113,3 @@ views.style.mason:
     id:
       type: string
       label: 'Mason ID'
-
-# Mason image base settings.
-mason_image:
-  type: mason_base
-  label: 'Mason image display format settings'
-
-# The Mason image formatter settings.
-field.formatter.settings.mason_image:
-  type: mason_image
-  label: 'Mason image display format settings'

@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\mason\MasonSkinInterface.
- */
-
 namespace Drupal\mason;
 
 /**

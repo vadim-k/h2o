@@ -12,7 +12,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
  */
 function mason_theme() {
   $themes = [];
-  foreach (array('mason', 'box', 'image') as $item) {
+  foreach (array('mason', 'box') as $item) {
     $key = $item == 'mason' ? 'mason' : 'mason_' . $item;
     $themes[$key] = [
       'render element' => 'element',
