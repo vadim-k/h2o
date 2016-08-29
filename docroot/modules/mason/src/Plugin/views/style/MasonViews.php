@@ -73,6 +73,10 @@ class MasonViews extends BlazyStylePluginBase {
     $fields     = ['captions', 'layouts', 'images', 'links', 'titles', 'classes'];
     $definition = $this->getDefinedFieldOptions($fields);
 
+    foreach (['background', 'caches', 'fieldable_form', 'id', 'vanilla'] as $key) {
+      $definition[$key] = TRUE;
+    }
+
     $this->admin()->buildSettingsForm($form, $definition);
 
     $title = '<p class="form__header form__title">';

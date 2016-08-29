@@ -68,13 +68,12 @@ class MasonAdmin implements MasonAdminInterface {
       'skins'      => $this->getSkinOptions(),
     ];
 
-    foreach (['background', 'caches', 'fieldable_form', 'id', 'vanilla'] as $key) {
-      $definition[$key] = TRUE;
+    $this->openingForm($form, $definition);
+
+    if (isset($definition['image_style_form']) && !isset($form['image_style'])) {
+      $this->imageStyleForm($form, $definition);
     }
 
-    $definition['layouts'] = isset($definition['layouts']) ? array_merge($this->getLayoutOptions(), $definition['layouts']) : $this->getLayoutOptions();
-
-    $this->openingForm($form, $definition);
     $this->mainForm($form, $definition);
     $this->closingForm($form, $definition);
   }
@@ -92,6 +91,17 @@ class MasonAdmin implements MasonAdminInterface {
 
     $form['skin']['#description'] = $this->t('Skins allow various layouts with just CSS. Some options below depend on a skin. Leave empty to DIY. Or use hook_mason_skins_info() and implement \Drupal\mason\MasonSkinInterface to register ones.', [':url' => $readme]);
     $form['background']['#description'] = $this->t('If trouble with image sizes not filling the given box, check this to turn the image into CSS background instead. To assign different image style per grid/box, edit the working optionset.');
+  }
+
+  /**
+   * Returns the image formatter form elements.
+   */
+  public function imageStyleForm(array &$form, $definition = []) {
+    $definition['ratios'] = TRUE;
+
+    if (!isset($form['image_style'])) {
+      $this->blazyAdmin->imageStyleForm($form, $definition);
+    }
   }
 
   /**
@@ -145,6 +155,13 @@ class MasonAdmin implements MasonAdminInterface {
       'center' => $this->t('Caption center'),
       'top'    => $this->t('Caption top'),
     ];
+  }
+
+  /**
+   * Return the field formatter settings summary.
+   */
+  public function settingsSummary($plugin) {
+    return $this->blazyAdmin->settingsSummary($plugin);
   }
 
 }
