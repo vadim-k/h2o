@@ -1,0 +1,5 @@
+name: Gallery
+description: Provides gallery plugin
+core: 8.x
+package: Media
+type: module

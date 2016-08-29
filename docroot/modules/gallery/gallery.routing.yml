@@ -1,0 +1,7 @@
+gallery.demo:
+  path: '/gallery/demo/{plugin_name}'
+  defaults:
+    _controller: '\Drupal\gallery\Controller\GalleryController::demoPage'
+    _title: 'Gallery plugins demo page'
+  requirements:
+    _permission: 'access content'
