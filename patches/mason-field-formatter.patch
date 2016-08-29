@@ -486,7 +486,7 @@ index 0000000..a1e6cfc
 +      $element['image'] = [];
 +      $element[$item_id] = $this->formatter->getImage($element);
 +      $build['items'][$delta] = $element;
-+ 
++
 +      unset($build['items'][$delta]['item']);
 +
 +      if ($settings['nav']) {

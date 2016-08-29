@@ -117,7 +117,7 @@ class MasonImageFormatter extends ImageFormatterBase implements ContainerFactory
       $element['image'] = [];
       $element[$item_id] = $this->formatter->getImage($element);
       $build['items'][$delta] = $element;
- 
+
       unset($build['items'][$delta]['item']);
 
       if ($settings['nav']) {
