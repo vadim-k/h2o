@@ -74,7 +74,6 @@ class GalleryBlock extends BlockBase implements ContainerFactoryPluginInterface 
    */
   public function defaultConfiguration() {
     return array();
-    //return $this->galleryInstance->defaultConfiguration();
   }
   
   /**

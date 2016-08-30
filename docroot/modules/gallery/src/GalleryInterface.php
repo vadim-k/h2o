@@ -30,4 +30,11 @@ interface GalleryInterface extends PluginInspectionInterface {
    */
   public function build();
 
+  /**
+   * Return the renderable array of the gallery items.
+   *
+   * @return array
+   */
+  public function getItems();
+
 }

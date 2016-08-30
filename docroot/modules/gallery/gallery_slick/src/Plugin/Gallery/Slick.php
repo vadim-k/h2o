@@ -29,8 +29,10 @@ class Slick extends GalleryBase {
    * {@inheritdoc}
    */
   public function build() {
+    $items = $this->getItems();
     $build = array(
       '#theme' => 'gallery_slick',
+      '#items' => $items,
       '#attached' => array(
         'library' => 'gallery_slick/slick.init',
       ),

@@ -12,7 +12,9 @@ function gallery_slick_theme($existing, $type, $theme, $path) {
   $path = $path . '/templates';
   return array(
     'gallery_slick' => array(
-      'render element' => 'element',
+      'variables' => array(
+        'items' => array(),
+      ),
       'path' => $path,
       'file' => 'gallery_slick.theme.inc',
     ),
