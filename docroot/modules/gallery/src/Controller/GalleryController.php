@@ -5,7 +5,7 @@ namespace Drupal\gallery\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Controller\ControllerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\gallery\GalleryPluginManager;
+use Drupal\gallery\GalleryManager;
 
 /**
  * Controller routines for page example routes.
@@ -22,12 +22,10 @@ class GalleryController extends ControllerBase {
   /**
    * Constructor.
    *
-   * @param \Drupal\gallery\GalleryPluginManager $sandwich_manager
-   *   The sandwich plugin manager service. We're injecting this service so that
-   *   we can use it to access the sandwich plugins.
+   * @param \Drupal\gallery\GalleryManager $galleryManager
    */
-  public function __construct(GalleryPluginManager $galleryManager) {
-    $this->galleryManager = $galleryManager;
+  public function __construct(GalleryManager $gallery_manager) {
+    $this->galleryManager = $gallery_manager;
   }
 
   /**
@@ -38,7 +36,6 @@ class GalleryController extends ControllerBase {
   }
 
   public function demoPage() {
-
     $gallery_plugin_definitions = $this->galleryManager->getDefinitions();
     $items = array();
     foreach ($gallery_plugin_definitions as $gallery_plugin_definition) {

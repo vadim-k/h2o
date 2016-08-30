@@ -1,4 +1,4 @@
 services:
   plugin.manager.gallery:
-    class: Drupal\gallery\GalleryPluginManager
+    class: Drupal\gallery\GalleryManager
     arguments: ['@container.namespaces', '@cache.default', '@module_handler']

@@ -3,7 +3,7 @@
  * @file
  * Contains \Drupal\gallery\Plugin\Gallery\Chocolate.
  */
-namespace Drupal\gallery\Plugin\Gallery;
+namespace Drupal\gallery_masonry\Plugin\Gallery;
 
 use Drupal\gallery\GalleryBase;
 
@@ -11,7 +11,7 @@ use Drupal\gallery\GalleryBase;
  * Provides 'slick' plugin.
  *
  * @Gallery(
- *   id = "Masonry",
+ *   id = "masonry",
  *   label = "Masonry",
  *   description = @Translation("Masonry is a JavaScript grid layout library")
  * )

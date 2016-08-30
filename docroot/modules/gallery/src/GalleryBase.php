@@ -11,21 +11,24 @@ use Drupal\Component\Plugin\PluginBase;
 class GalleryBase extends PluginBase implements GalleryInterface {
 
   /**
-   * Returns gallery label
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getLabel() {
     return $this->pluginDefinition['label'];
   }
 
   /**
-   * Returns gallery description
-   *
-   * @return string
+   * {@inheritdoc}
    */
   public function getDescription() {
     return $this->pluginDefinition['description'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    return array();
   }
 
 }

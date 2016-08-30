@@ -1,5 +1,5 @@
 name: Gallery
-description: Provides gallery plugin
+description: Provides gallery plugin integration
 core: 8.x
-package: Media
+package: Gallery
 type: module

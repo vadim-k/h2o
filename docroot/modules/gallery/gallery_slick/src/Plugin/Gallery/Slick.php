@@ -3,7 +3,7 @@
  * @file
  * Contains \Drupal\gallery\Plugin\Gallery\Chocolate.
  */
-namespace Drupal\gallery\Plugin\Gallery;
+namespace Drupal\gallery_slick\Plugin\Gallery;
 
 use Drupal\gallery\GalleryBase;
 
@@ -17,5 +17,22 @@ use Drupal\gallery\GalleryBase;
  * )
  */
 class Slick extends GalleryBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfiguration() {
+    return $this->configuration;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $build = array(
+      '#markup' => 'test2',
+    );
+    return $build;
+  }
 
 }

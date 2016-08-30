@@ -1,5 +1,5 @@
 gallery.demo:
-  path: '/gallery/demo/{plugin_name}'
+  path: '/gallery/demo'
   defaults:
     _controller: '\Drupal\gallery\Controller\GalleryController::demoPage'
     _title: 'Gallery plugins demo page'

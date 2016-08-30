@@ -9,10 +9,10 @@ use Drupal\Core\Plugin\DefaultPluginManager;
 /**
  * Manages gallery plugins.
  */
-class GalleryPluginManager extends DefaultPluginManager {
+class GalleryManager extends DefaultPluginManager {
 
   /**
-   * Constructs a GalleryPluginManager object.
+   * Constructs a GalleryManager object.
    *
    * @param \Traversable $namespaces
    *   An object that implements \Traversable which contains the root paths
