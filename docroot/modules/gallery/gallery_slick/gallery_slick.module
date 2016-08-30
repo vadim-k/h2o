@@ -4,3 +4,17 @@
  * @file
  * Provides Slick Carousel gallery plugin integration.
  */
+
+/**
+ * Implements hook_theme().
+ */
+function gallery_slick_theme($existing, $type, $theme, $path) {
+  $path = $path . '/templates';
+  return array(
+    'gallery_slick' => array(
+      'render element' => 'element',
+      'path' => $path,
+      'file' => 'gallery_slick.theme.inc',
+    ),
+  );
+}

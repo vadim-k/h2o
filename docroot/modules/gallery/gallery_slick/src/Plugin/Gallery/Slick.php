@@ -30,7 +30,10 @@ class Slick extends GalleryBase {
    */
   public function build() {
     $build = array(
-      '#markup' => 'test2',
+      '#theme' => 'gallery_slick',
+      '#attached' => array(
+        'library' => 'gallery_slick/slick.init',
+      ),
     );
     return $build;
   }
