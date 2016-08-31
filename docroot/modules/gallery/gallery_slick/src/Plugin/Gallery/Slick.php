@@ -32,7 +32,7 @@ class Slick extends GalleryBase {
     $items = $this->getItems();
     $build = array(
       '#theme' => 'gallery_slick',
-      '#items' => $items,
+      '#slides' => $items,
       '#attached' => array(
         'library' => 'gallery_slick/slick.init',
       ),

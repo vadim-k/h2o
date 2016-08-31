@@ -21,4 +21,4 @@ slick.init:
   dependencies:
     - core/drupal
     - core/drupalSettings
-    - slick_gallery/slick
+    - gallery_slick/slick

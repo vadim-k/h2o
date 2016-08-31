@@ -37,4 +37,11 @@ interface GalleryInterface extends PluginInspectionInterface {
    */
   public function getItems();
 
+  /**
+   * Return the items entity query
+   *
+   * @return \Drupal\Core\Entity\Query\QueryFactory
+   */
+  public function getQuery();
+
 }
