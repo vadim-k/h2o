@@ -12,7 +12,11 @@
    */
   Drupal.behaviors.slick = {
     attach: function (context) {
-
+      $('.slick-slider:not(.unslick)', context).once('slick').each(function () {
+        $(this).slick({
+          
+        });
+      });
     },
   };
 
