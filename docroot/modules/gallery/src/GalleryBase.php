@@ -61,8 +61,8 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityManager = $entity_manager;
     $this->entityQuery = $entity_query;
-    $this->entityType = 'file';
-    $this->entityViewMode = 'default';
+    $this->setEntityType();
+    $this->setEntityViewMode();
   }
 
   /**
@@ -95,6 +95,26 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
   /**
    * {@inheritdoc}
    */
+  public function setEntityType($entity_type = NULL) {
+    if (!$entity_type) {
+      $entity_type = !empty($this->configuration['entity_type']) ? $this->configuration['entity_type'] : 'file';
+    }
+    $this->entityType = $entity_type;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setEntityViewMode($entity_view_mode = NULL) {
+    if (!$entity_view_mode) {
+      $entity_view_mode = !empty($this->configuration['entity_view_mode']) ? $this->configuration['entity_view_mode'] : 'default';
+    }
+    $this->entityViewMode = $entity_view_mode;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     return array();
   }
@@ -120,11 +140,15 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
    */
   public function getQuery() {
     $entity_query = $this->entityQuery->get($this->entityType);
-    $entity_query->condition('status', 1);
-    $entity_query->sort('created', 'DESC');
     $entity_query->sort('uuid', 10000, '>');
     $entity_query->range(0, 20);
-    if ($this->entityType == 'file') {
+    if (in_array($this->entityType, array('file', 'node', 'user', 'comment', 'block'))) {
+      $entity_query->condition('status', 1);
+    }
+    if (in_array($this->entityType, array('file', 'node', 'user', 'comment', 'block'))) {
+      $entity_query->sort('created', 'DESC');
+    }
+    if (in_array($this->entityType, array('file'))) {
       $entity_query->condition('filesize', 10000, '>');
     }
     return $entity_query;

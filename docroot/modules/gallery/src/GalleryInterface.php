@@ -24,6 +24,20 @@ interface GalleryInterface extends PluginInspectionInterface {
   public function getDescription();
 
   /**
+   * Sets the entity type.
+   *
+   * @param string
+   */
+  public function setEntityType($entity_type = NULL);
+
+  /**
+   * Sets the entity view mode.
+   *
+   * @param string
+   */
+  public function setEntityViewMode($entity_view_mode = NULL);
+
+  /**
    * Return the renderable array of the gallery plugin.
    *
    * @return array
