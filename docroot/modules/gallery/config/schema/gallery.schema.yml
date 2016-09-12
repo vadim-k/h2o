@@ -1,0 +1,14 @@
+# Schema for the gallery config entity.
+gallery.*:
+  type: mapping
+  label: 'Gallery'
+  mapping:
+    id:
+      type: string
+      label: 'Gallery id'
+    uuid:
+      type: string
+      label: 'UUID'
+    label:
+      type: label
+      label: 'Label'

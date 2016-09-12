@@ -5,3 +5,35 @@ gallery.demo:
     _title: 'Gallery plugins demo page'
   requirements:
     _permission: 'access content'
+
+entity.gallery.list:
+  path: '/admin/config/media/gallery'
+  defaults:
+    _entity_list: 'gallery'
+    _title: 'Gallery'
+  requirements:
+    _permission: 'administer gallery'
+
+entity.gallery.add_form:
+  path: '/admin/config/media/gallery/add'
+  defaults:
+    _title: 'Add gallery'
+    _entity_form: gallery.add
+  requirements:
+    _entity_create_access: gallery
+
+entity.gallery.edit_form:
+  path: '/admin/config/media/gallery/manage/{gallery}'
+  defaults:
+    _title: 'Edit gallery'
+    _entity_form: gallery.edit
+  requirements:
+    _entity_access: gallery.update
+
+entity.gallery.delete_form:
+  path: '/admin/config/media/gallery/manage/{gallery}/delete'
+  defaults:
+    _title: 'Delete gallery'
+    _entity_form: gallery.delete
+  requirements:
+    _entity_access: gallery.delete

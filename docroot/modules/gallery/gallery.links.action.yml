@@ -1,0 +1,13 @@
+gallery.add_action:
+  route_name: entity.gallery.add_form
+  title: 'Add gallery'
+  appears_on:
+    - entity.gallery.list
+
+gallery.list_action:
+  route_name: entity.gallery.list
+  title: 'List Galleries'
+  appears_on:
+    - entity.gallery.add_form
+    - entity.gallery.edit_form
+    - entity.gallery.delete_form

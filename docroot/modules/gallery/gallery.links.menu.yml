@@ -1,0 +1,6 @@
+gallery.list:
+  route_name: entity.gallery.list
+  parent: system.admin_config_media
+  title: Gallery
+  description: 'Manage galleries.'
+  weight: -10
