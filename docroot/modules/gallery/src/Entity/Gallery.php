@@ -52,4 +52,11 @@ class Gallery extends ConfigEntityBase {
    */
   public $label;
 
+  /**
+   * The gallery type.
+   *
+   * @var string
+   */
+  public $type;
+
 }

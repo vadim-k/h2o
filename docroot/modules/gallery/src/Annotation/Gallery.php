@@ -37,4 +37,11 @@ class Gallery extends Plugin {
    */
   public $description;
 
+  /**
+   * Plugin weight.
+   *
+   * @var int
+   */
+  public $weight;
+
 }

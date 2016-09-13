@@ -28,4 +28,18 @@ class GalleryManager extends DefaultPluginManager {
     $this->setCacheBackend($cache_backend, 'gallery_info');
   }
 
+  /**
+   * Sorts plugin definitions by weight.
+   *
+   * {@inheritdoc}
+   */
+  protected function findDefinitions() {
+    $definitions = parent::findDefinitions();
+    foreach($definitions as $definition) {
+      $weight[] = isset($definition['weight']) ? $definition['weight'] : 0;
+    }
+    array_multisort($definitions, SORT_NUMERIC, SORT_DESC, $weight);
+    return $definitions;
+  }
+
 }

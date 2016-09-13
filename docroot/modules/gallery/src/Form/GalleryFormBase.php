@@ -7,6 +7,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\gallery\GalleryManager;
 
 class galleryFormBase extends EntityForm {
 
@@ -16,26 +17,37 @@ class galleryFormBase extends EntityForm {
   protected $entityQueryFactory;
 
   /**
+   * The gallery plugin manager.
+   *
+   * @var \Drupal\gallery\GalleryManager
+   */
+  protected $galleryManager;
+
+  /**
    * Construct the galleryFormBase.
    *
    * @param \Drupal\Core\Entity\Query\QueryFactory $query_factory
    *   An entity query factory for the gallery entity type.
    */
-  public function __construct(QueryFactory $query_factory) {
+  public function __construct(QueryFactory $query_factory, GalleryManager $gallery_manager) {
     $this->entityQueryFactory = $query_factory;
+    $this->galleryManager = $gallery_manager;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('entity.query'));
+    return new static(
+      $container->get('entity.query'),
+      $container->get('plugin.manager.gallery')
+    );
   }
 
   /**
    * Overrides Drupal\Core\Entity\EntityFormController::form().
    *
-   * Builds the entity add/edit form.
+   * Builds the galleryentity add/edit form.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -46,17 +58,15 @@ class galleryFormBase extends EntityForm {
    *   An associative array containing the gallery add/edit form.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Get anything we need from the base class.
     $form = parent::buildForm($form, $form_state);
-
-    // Drupal provides the entity to us as a class variable. If this is an
-    // existing entity, it will be populated with existing values as class
-    // variables. If this is a new entity, it will be a new object with the
-    // class of our entity. Drupal knows which class to call from the
-    // annotation on our gallery class.
     $gallery = $this->entity;
+    $gallery_plugin_definitions = $this->galleryManager->getDefinitions();
+    $gallery_type_options = array();
+    foreach ($gallery_plugin_definitions as $key => $gallery_definition) {
+      $gallery_type_options[$key] = $gallery_definition['label'];
+    }
+    $type = $gallery->get('type');
 
-    // Build the form.
     $form['label'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
@@ -76,8 +86,61 @@ class galleryFormBase extends EntityForm {
       '#disabled' => !$gallery->isNew(),
     );
 
-    // Return the form.
+    $form['type'] = array(
+      '#type' => 'select',
+      '#options' => $gallery_type_options,
+      '#title' => $this->t('Gallery Type'),
+      '#default_value' => $type,
+      '#required' => TRUE,
+      '#ajax' => array(
+        'callback' => '::typeCallback',
+        'wrapper' => 'gallery-config-wrapper',
+      ),
+    );
+
+    $form['gallery_config_wrapper'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'id' => 'gallery-config-wrapper',
+      ),
+    );
+
+    if ($type) {
+      $this->setGalleryConfigForm($form['gallery_config_wrapper'], $type);
+    }
+
     return $form;
+  }
+
+  /**
+   * Implements callback for Ajax event on type selection.
+   *
+   * @param array $form
+   *   From render array.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Current state of form.
+   *
+   * @return array
+   *   An associative array containing the gallery config form.
+   */
+  public function typeCallback(array &$form, FormStateInterface $form_state) {
+    $type = $form_state->getValue('type');
+
+    $this->setGalleryConfigForm($form['gallery_config_wrapper'], $type);
+
+    return $form['gallery_config_wrapper'];
+  }
+
+  /**
+   * Implements callback for Ajax event on type selection.
+   *
+   * @param string $type
+   *   Gallery plugin id.
+   */
+  protected function setGalleryConfigForm(array &$form, $type) {
+    $form['type'] = array(
+      '#markup' => $type,
+    );
   }
 
   /**

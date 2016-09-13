@@ -12,3 +12,6 @@ gallery.*:
     label:
       type: label
       label: 'Label'
+    type:
+      type: string
+      label: 'Type'

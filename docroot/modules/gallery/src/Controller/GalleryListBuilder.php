@@ -21,6 +21,7 @@ class GalleryListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Gallery');
     $header['machine_name'] = $this->t('Machine Name');
+    $header['type'] = $this->t('Type');
     return $header + parent::buildHeader();
   }
 
@@ -38,6 +39,7 @@ class GalleryListBuilder extends ConfigEntityListBuilder {
   public function buildRow(EntityInterface $entity) {
     $row['label'] = $entity->label();
     $row['machine_name'] = $entity->id();
+    $row['type'] = $entity->get('type');
 
     return $row + parent::buildRow($entity);
   }

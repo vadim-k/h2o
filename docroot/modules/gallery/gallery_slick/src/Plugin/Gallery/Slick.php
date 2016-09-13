@@ -13,7 +13,8 @@ use Drupal\gallery\GalleryBase;
  * @Gallery(
  *   id = "slick",
  *   label = "Slick Carousel",
- *   description = @Translation("Slick is a powerful and performant slideshow/carousel solution leveraging Ken Wheeler's Slick carousel.")
+ *   description = @Translation("Slick is a powerful and performant slideshow/carousel solution leveraging Ken Wheeler's Slick carousel."),
+ *   weight = -10
  * )
  */
 class Slick extends GalleryBase {
