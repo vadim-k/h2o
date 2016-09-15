@@ -1,4 +1,4 @@
 #Define the administer permission for the gallery module.
-'administer gallery':
-  title: 'Administer gallery'
-  description: Create and edit galleries.
+'administer gallery styles':
+  title: 'Administer gallery styles'
+  description: Create and edit gallery styles.

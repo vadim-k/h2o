@@ -1,0 +1,153 @@
+gallery.settings.slick:
+  type: mapping
+  label: 'Slick Carousel'
+  mapping:
+    mobile_first:
+      type: boolean
+      label: 'Mobile first'
+    as_nav_for:
+      type: string
+      label: 'asNavFor target'
+    accessibility:
+      type: boolean
+      label: 'Accessibility'
+    adaptive_height:
+      type: boolean
+      label: 'Adaptive height'
+    autoplay:
+      type: boolean
+      label: 'Autoplay'
+    pause_on_hover:
+      type: boolean
+      label: 'Pause on hover'
+    pause_on_dots_hover:
+      type: boolean
+      label: 'Pause on dots hover'
+    autoplay_speed:
+      type: integer
+      label: 'Autoplay speed'
+    arrows:
+      type: boolean
+      label: 'Arrows'
+    prev_arrow:
+      type: text
+      label: 'Previous arrow'
+    next_arrow:
+      type: text
+      label: 'Next arrow'
+    down_arrow:
+      type: boolean
+      label: 'Use arrow down'
+    down_arrow_target:
+      type: string
+      label: 'Arrow down target'
+    down_arrow_offset:
+      type: integer
+      label: 'Arrow down offset'
+    center_mode:
+      type: boolean
+      label: 'Center mode'
+    center_padding:
+      type: string
+      label: 'Center padding'
+    dots:
+      type: boolean
+      label: 'Dots'
+    dots_class:
+      type: string
+      label: 'Dot class'
+    append_dots:
+      type: string
+      label: 'appendDots'
+    draggable:
+      type: boolean
+      label: 'Draggable'
+    fade:
+      type: boolean
+      label: 'Fade'
+    focus_on_select:
+      type: boolean
+      label: 'Focus on select'
+    infinite:
+      type: boolean
+      label: 'Infinite'
+    initial_slide:
+      type: integer
+      label: 'Initial slide'
+    lazy_load:
+      type: string
+      label: 'Lazy load'
+    mouse_wheel:
+      type: boolean
+      label: 'Mousewheel'
+    randomize:
+      type: boolean
+      label: 'Randomize'
+    respond_to:
+      type: string
+      label: 'Respond to'
+    rtl:
+      type: boolean
+      label: 'RTL'
+    rows:
+      type: integer
+      label: 'Rows'
+    slides_per_row:
+      type: integer
+      label: 'Slides per row'
+    slide:
+      type: string
+      label: 'Slide element'
+    slides_to_show:
+      type: integer
+      label: 'Slides to show'
+    slides_to_scroll:
+      type: integer
+      label: 'Slides to scroll'
+    speed:
+      type: integer
+      label: 'Speed'
+    swipe:
+      type: boolean
+      label: 'Swipe'
+    swipe_to_slide:
+      type: boolean
+      label: 'Swipe to slide'
+    edge_friction:
+      type: float
+      label: 'Edge friction'
+    touch_move:
+      type: boolean
+      label: 'Touch move'
+    touch_threshold:
+      type: integer
+      label: 'Touch threshold'
+    use_css:
+      type: boolean
+      label: 'Use CSS'
+    css_ease:
+      type: string
+      label: 'CSS ease'
+    css_ease_bezier:
+      type: string
+    css_ease_override:
+      type: string
+      label: 'CSS ease override'
+    use_transform:
+      type: boolean
+      label: 'Use Transform'
+    easing:
+      type: string
+      label: 'Easing'
+    variable_width:
+      type: boolean
+      label: 'variableWidth'
+    vertical:
+      type: boolean
+      label: 'Vertical'
+    vertical_swiping:
+      type: boolean
+      label: 'verticalSwiping'
+    wait_for_animate:
+      type: boolean
+      label: 'waitForAnimate'

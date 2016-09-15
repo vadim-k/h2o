@@ -4,7 +4,7 @@ namespace Drupal\gallery\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-class GalleryEditForm extends GalleryFormBase {
+class GalleryStyleEditForm extends GalleryStyleFormBase {
 
   /**
    * Returns the actions provided by this form.

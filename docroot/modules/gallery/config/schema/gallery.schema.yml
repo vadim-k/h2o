@@ -1,17 +1,22 @@
 # Schema for the gallery config entity.
-gallery.*:
-  type: mapping
-  label: 'Gallery'
+
+gallery.style.*:
+  type: config_entity
+  label: 'Gallery style'
   mapping:
-    id:
+    name:
       type: string
-      label: 'Gallery id'
     uuid:
       type: string
       label: 'UUID'
     label:
       type: label
       label: 'Label'
-    type:
+    style:
       type: string
-      label: 'Type'
+    settings:
+      type: gallery.settings.[%parent.style]
+
+gallery.settings.*:
+  type: mapping
+  label: 'Gallery settings'

@@ -1,6 +1,6 @@
 gallery.list:
-  route_name: entity.gallery.list
+  route_name: entity.gallery_style.list
   parent: system.admin_config_media
-  title: Gallery
-  description: 'Manage galleries.'
+  title: Gallery styles
+  description: Configure styles that can be used for galleries.
   weight: -10

@@ -4,10 +4,7 @@ namespace Drupal\gallery\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 
-/**
- * Provides the add form for our Gallery config entity.
- */
-class GalleryAddForm extends GalleryFormBase {
+class GalleryStyleAddForm extends GalleryStyleFormBase {
 
   /**
    * Returns the actions provided by this form.

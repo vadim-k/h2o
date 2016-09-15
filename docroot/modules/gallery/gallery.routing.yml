@@ -6,34 +6,34 @@ gallery.demo:
   requirements:
     _permission: 'access content'
 
-entity.gallery.list:
-  path: '/admin/config/media/gallery'
+entity.gallery_style.list:
+  path: '/admin/config/media/gallery-styles'
   defaults:
-    _entity_list: 'gallery'
+    _entity_list: 'gallery_style'
     _title: 'Gallery'
   requirements:
-    _permission: 'administer gallery'
+    _permission: 'administer gallery styles'
 
-entity.gallery.add_form:
-  path: '/admin/config/media/gallery/add'
+entity.gallery_style.add_form:
+  path: '/admin/config/media/gallery-styles/manage/add'
   defaults:
     _title: 'Add gallery'
-    _entity_form: gallery.add
+    _entity_form: gallery_style.add
   requirements:
-    _entity_create_access: gallery
+    _entity_create_access: gallery_style
 
-entity.gallery.edit_form:
-  path: '/admin/config/media/gallery/manage/{gallery}'
+entity.gallery_style.edit_form:
+  path: '/admin/config/media/gallery-styles/manage/{gallery_style}'
   defaults:
     _title: 'Edit gallery'
-    _entity_form: gallery.edit
+    _entity_form: gallery_style.edit
   requirements:
-    _entity_access: gallery.update
+    _entity_access: gallery_style.update
 
-entity.gallery.delete_form:
-  path: '/admin/config/media/gallery/manage/{gallery}/delete'
+entity.gallery_style.delete_form:
+  path: '/admin/config/media/gallery-styles/manage/{gallery_style}/delete'
   defaults:
     _title: 'Delete gallery'
-    _entity_form: gallery.delete
+    _entity_form: gallery_style.delete
   requirements:
-    _entity_access: gallery.delete
+    _entity_access: gallery_style.delete

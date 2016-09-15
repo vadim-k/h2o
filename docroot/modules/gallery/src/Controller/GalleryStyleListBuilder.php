@@ -8,7 +8,7 @@ use Drupal\Core\Entity\EntityInterface;
 /**
  * Provides a listing of gallery config entities.
  */
-class GalleryListBuilder extends ConfigEntityListBuilder {
+class GalleryStyleListBuilder extends ConfigEntityListBuilder {
 
   /**
    * Builds the header row for the entity listing.
@@ -21,7 +21,7 @@ class GalleryListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Gallery');
     $header['machine_name'] = $this->t('Machine Name');
-    $header['type'] = $this->t('Type');
+    $header['style'] = $this->t('Style');
     return $header + parent::buildHeader();
   }
 
@@ -38,8 +38,8 @@ class GalleryListBuilder extends ConfigEntityListBuilder {
    */
   public function buildRow(EntityInterface $entity) {
     $row['label'] = $entity->label();
-    $row['machine_name'] = $entity->id();
-    $row['type'] = $entity->get('type');
+    $row['machine_name'] = $entity->get('name');
+    $row['style'] = $entity->get('style');
 
     return $row + parent::buildRow($entity);
   }
