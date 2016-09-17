@@ -162,6 +162,14 @@ class GalleryStyleFormBase extends EntityForm {
   /**
    * {@inheritdoc}
    */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->entity->settings = array();
+    parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function save(array $form, FormStateInterface $form_state) {
     $gallery = $this->getEntity();
     $status = $gallery->save();

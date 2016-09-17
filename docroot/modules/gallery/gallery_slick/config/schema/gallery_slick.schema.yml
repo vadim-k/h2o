@@ -2,146 +2,132 @@ gallery.settings.gallery_slick:
   type: mapping
   label: 'Slick Carousel'
   mapping:
-    mobile_first:
-      type: boolean
-      label: 'Mobile first'
-    as_nav_for:
-      type: string
-      label: 'asNavFor target'
     accessibility:
       type: boolean
-      label: 'Accessibility'
+      label: 'accessibility'
     adaptive_height:
       type: boolean
-      label: 'Adaptive height'
+      label: 'adaptiveHeight'
     autoplay:
       type: boolean
-      label: 'Autoplay'
-    pause_on_hover:
-      type: boolean
-      label: 'Pause on hover'
-    pause_on_dots_hover:
-      type: boolean
-      label: 'Pause on dots hover'
+      label: 'autoplay'
     autoplay_speed:
       type: integer
-      label: 'Autoplay speed'
+      label: 'autoplayautoplaySpeed'
     arrows:
       type: boolean
-      label: 'Arrows'
-    prev_arrow:
-      type: text
-      label: 'Previous arrow'
-    next_arrow:
-      type: text
-      label: 'Next arrow'
-    down_arrow:
-      type: boolean
-      label: 'Use arrow down'
-    down_arrow_target:
+      label: 'arrows'
+    as_nav_for:
       type: string
-      label: 'Arrow down target'
-    down_arrow_offset:
-      type: integer
-      label: 'Arrow down offset'
-    center_mode:
-      type: boolean
-      label: 'Center mode'
-    center_padding:
-      type: string
-      label: 'Center padding'
-    dots:
-      type: boolean
-      label: 'Dots'
-    dots_class:
-      type: string
-      label: 'Dot class'
+      label: 'asNavFor'
     append_arrows:
       type: string
       label: 'appendArrows'
     append_dots:
       type: string
       label: 'appendDots'
+    prev_arrow:
+      type: text
+      label: 'prevArrow'
+    next_arrow:
+      type: text
+      label: 'nextArrow'
+    center_mode:
+      type: boolean
+      label: 'centerMode'
+    center_padding:
+      type: string
+      label: 'centerPadding'
+    css_ease:
+      type: string
+      label: 'cssEase'
+    custom_paging:
+      type: string
+      label: 'customPaging'
+    dots:
+      type: boolean
+      label: 'dots'
+    dots_class:
+      type: string
+      label: 'dotsClass'
     draggable:
       type: boolean
-      label: 'Draggable'
+      label: 'draggable'
     fade:
       type: boolean
-      label: 'Fade'
+      label: 'fade'
     focus_on_select:
       type: boolean
-      label: 'Focus on select'
+      label: 'focusOnSelect'
+    easing:
+      type: string
+      label: 'Easing'
+    edge_friction:
+      type: float
+      label: 'edgeFriction'
     infinite:
       type: boolean
-      label: 'Infinite'
+      label: 'infinite'
     initial_slide:
       type: integer
-      label: 'Initial slide'
+      label: 'initialSlide'
     lazy_load:
       type: string
-      label: 'Lazy load'
-    mouse_wheel:
+      label: 'lazyLoad'
+    mobile_first:
       type: boolean
-      label: 'Mousewheel'
-    randomize:
+      label: 'mobileFirst'
+    pause_on_focus:
       type: boolean
-      label: 'Randomize'
+      label: 'PausepauseOnFocus'
+    pause_on_hover:
+      type: boolean
+      label: 'pauseOnHover'
+    pause_on_dots_hover:
+      type: boolean
+      label: 'PausepauseOnDotsHover'
     respond_to:
       type: string
-      label: 'Respond to'
-    rtl:
-      type: boolean
-      label: 'RTL'
+      label: 'respondTo'
+    responsive:
+      type: text
+      label: 'responsive'
     rows:
       type: integer
-      label: 'Rows'
-    slides_per_row:
-      type: integer
-      label: 'Slides per row'
+      label: 'rows'
     slide:
       type: string
-      label: 'Slide element'
+      label: 'slide'
+    slides_per_row:
+      type: integer
+      label: 'slidesPerRow'
     slides_to_show:
       type: integer
-      label: 'Slides to show'
+      label: 'slidesToShow'
     slides_to_scroll:
       type: integer
-      label: 'Slides to scroll'
+      label: 'slidesToScroll'
     speed:
       type: integer
       label: 'Speed'
     swipe:
       type: boolean
-      label: 'Swipe'
+      label: 'swipe'
     swipe_to_slide:
       type: boolean
-      label: 'Swipe to slide'
-    edge_friction:
-      type: float
-      label: 'Edge friction'
+      label: 'swipeToSlide'
     touch_move:
       type: boolean
-      label: 'Touch move'
+      label: 'touchMove'
     touch_threshold:
       type: integer
-      label: 'Touch threshold'
+      label: 'touchThreshold'
     use_css:
       type: boolean
-      label: 'Use CSS'
-    css_ease:
-      type: string
-      label: 'CSS ease'
-    css_ease_bezier:
-      type: string
-    css_ease_override:
-      type: string
-      label: 'CSS ease override'
+      label: 'useCSS'
     use_transform:
       type: boolean
-      label: 'Use Transform'
-    easing:
-      type: string
-      label: 'Easing'
+      label: 'useTransform'
     variable_width:
       type: boolean
       label: 'variableWidth'
@@ -151,6 +137,12 @@ gallery.settings.gallery_slick:
     vertical_swiping:
       type: boolean
       label: 'verticalSwiping'
+    rtl:
+      type: boolean
+      label: 'RTL'
     wait_for_animate:
       type: boolean
       label: 'waitForAnimate'
+    z_index:
+      type: integer
+      label: 'zIndex'
