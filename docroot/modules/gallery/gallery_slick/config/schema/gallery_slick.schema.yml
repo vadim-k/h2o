@@ -1,4 +1,4 @@
-gallery.settings.slick:
+gallery.settings.gallery_slick:
   type: mapping
   label: 'Slick Carousel'
   mapping:
@@ -56,6 +56,9 @@ gallery.settings.slick:
     dots_class:
       type: string
       label: 'Dot class'
+    append_arrows:
+      type: string
+      label: 'appendArrows'
     append_dots:
       type: string
       label: 'appendDots'

@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Routing\LinkGeneratorTrait;
 use Drupal\Component\Plugin\PluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  */
 class GalleryBase extends PluginBase implements GalleryInterface, ContainerFactoryPluginInterface {
+  use StringTranslationTrait;
+  use LinkGeneratorTrait;
 
   /**
    * The entity storage.
@@ -153,4 +157,12 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
     }
     return $entity_query;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSettingsForm() {
+    return array();
+  }
+
 }

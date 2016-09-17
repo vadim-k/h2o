@@ -42,4 +42,13 @@ class GalleryManager extends DefaultPluginManager {
     return $definitions;
   }
 
+  public function getStyles() {
+    $styles = array();
+    $plugin_definitions = $this->getDefinitions();
+    foreach ($plugin_definitions as $key => $plugin_definition) {
+      $styles[$key] = $plugin_definition['label'];
+    }
+    return $styles;
+  }
+
 }

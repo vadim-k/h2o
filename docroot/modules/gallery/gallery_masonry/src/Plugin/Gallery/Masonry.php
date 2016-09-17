@@ -11,7 +11,7 @@ use Drupal\gallery\GalleryBase;
  * Provides 'slick' plugin.
  *
  * @Gallery(
- *   id = "masonry",
+ *   id = "gallery_masonry",
  *   label = "Masonry",
  *   description = @Translation("Masonry is a JavaScript grid layout library")
  * )

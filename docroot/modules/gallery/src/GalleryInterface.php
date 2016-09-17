@@ -26,14 +26,14 @@ interface GalleryInterface extends PluginInspectionInterface {
   /**
    * Sets the entity type.
    *
-   * @param string
+   * @param string $entity_type
    */
   public function setEntityType($entity_type = NULL);
 
   /**
    * Sets the entity view mode.
    *
-   * @param string
+   * @param string $entity_view_mode
    */
   public function setEntityViewMode($entity_view_mode = NULL);
 
@@ -57,5 +57,13 @@ interface GalleryInterface extends PluginInspectionInterface {
    * @return \Drupal\Core\Entity\Query\QueryFactory
    */
   public function getQuery();
+
+  /**
+   * Returns the gallery settings form.
+   *
+   * @return array
+   *   The form array.
+   */
+  public function getSettingsForm();
 
 }

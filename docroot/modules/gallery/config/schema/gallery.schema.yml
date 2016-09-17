@@ -20,3 +20,4 @@ gallery.style.*:
 gallery.settings.*:
   type: mapping
   label: 'Gallery settings'
+
