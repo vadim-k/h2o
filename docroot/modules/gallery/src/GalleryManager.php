@@ -42,6 +42,12 @@ class GalleryManager extends DefaultPluginManager {
     return $definitions;
   }
 
+  /**
+   * Gets an array of gallery styles.
+   *
+   * @return
+   *   Array of gallery styles.
+   */
   public function getStyles() {
     $styles = array();
     $plugin_definitions = $this->getDefinitions();

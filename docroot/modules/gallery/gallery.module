@@ -4,3 +4,29 @@
  * @file
  * Provides gallery plugin integration.
  */
+
+use Drupal\gallery\Entity\GalleryStyle;
+
+/**
+ * Gets an array of gallery styles suitable for using as select list options.
+ *
+ * @param $include_empty
+ *   If TRUE a '- None -' option will be inserted in the options array.
+ * @return
+ *   Array of gallery styles both key and value are set to style name.
+ */
+function gallery_style_options($include_empty = TRUE) {
+  $styles = GalleryStyle::loadMultiple();
+  $options = array();
+  if ($include_empty && !empty($styles)) {
+    $options[''] = t('- None -');
+  }
+  foreach ($styles as $name => $style) {
+    $options[$name] = $style->label();
+  }
+
+  if (empty($options)) {
+    $options[''] = t('No defined styles');
+  }
+  return $options;
+}
