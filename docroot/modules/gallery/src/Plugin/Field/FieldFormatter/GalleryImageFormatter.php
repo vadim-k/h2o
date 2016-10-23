@@ -34,6 +34,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPluginInterface {
 
   /**
+   * The image style entity storage.
+   *
+   * @var \Drupal\image\ImageStyleStorageInterface
+   */
+  protected $galleryStyleStorage;
+
+  /**
    * The gallery plugin manager.
    *
    * @var \Drupal\gallery\GalleryManager
@@ -64,9 +71,10 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
    * @param \Drupal\gallery\GalleryManager $gallery_manager
    *   The gallery manager service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityStorageInterface $image_style_storage, GalleryManager $gallery_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, AccountInterface $current_user, EntityStorageInterface $image_style_storage, EntityStorageInterface $gallery_style_storage, GalleryManager $gallery_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $current_user, $image_style_storage);
     $this->galleryManager = $gallery_manager;
+    $this->galleryStyleStorage = $gallery_style_storage;
   }
 
   /**
@@ -83,6 +91,7 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
       $configuration['third_party_settings'],
       $container->get('current_user'),
       $container->get('entity.manager')->getStorage('image_style'),
+      $container->get('entity.manager')->getStorage('gallery_style'),
       $container->get('plugin.manager.gallery')
     );
   }
@@ -128,8 +137,6 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
     $gallery_styles = gallery_style_options(FALSE);
     // Unset possible 'No defined styles' option.
     unset($gallery_styles['']);
-    // Styles could be lost because of enabled/disabled modules that defines
-    // their styles in code.
     $gallery_style_setting = $this->getSetting('gallery_style');
     if (isset($gallery_styles[$gallery_style_setting])) {
       $summary[] = t('Gallery style: @style', array('@style' => $gallery_styles[$gallery_style_setting]));
@@ -139,6 +146,26 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
     }
 
     return $summary;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function viewElements(FieldItemListInterface $items, $langcode) {
+    $elements = array();
+    $items = parent::viewElements($items, $langcode);
+    if ($items) {
+      $gallery_style_setting = $this->getSetting('gallery_style');
+      if (!empty($gallery_style_setting)) {
+        $gallery_style = $this->galleryStyleStorage->load($gallery_style_setting);
+        if ($gallery_style) {
+          $this->galleryInstance = $this->galleryManager->createInstance($gallery_style->getStyle(), array('items' => $items));
+          $elements = $this->galleryInstance->build();
+        }
+      }
+    }
+    return $elements;
   }
 
 }

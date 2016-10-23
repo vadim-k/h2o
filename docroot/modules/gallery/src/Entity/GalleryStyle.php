@@ -3,6 +3,7 @@
 namespace Drupal\gallery\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\gallery\Entity\GalleryStyleInterface;
 
 /**
  * Defines the gallery config entity.
@@ -36,7 +37,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   }
  * )
  */
-class GalleryStyle extends ConfigEntityBase {
+class GalleryStyle extends ConfigEntityBase implements GalleryStyleInterface {
 
   /**
    * The name of the gallery style.
@@ -88,18 +89,19 @@ class GalleryStyle extends ConfigEntityBase {
   }
 
   /**
-   * Gets the gallery style settings value by key.
-   *
-   * @param string $key
-   *   The key of the value to retrieve.
-   *
-   * @return mixed
-   *   The value for the key, or NULL if the value does not exist.
+   * {@inheritdoc}
    */
   public function getSettingsValue($key) {
     $settings = $this->get('settings');
     $value = isset($settings[$key]) ? $settings[$key] : NULL;
     return $value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStyle() {
+    return $this->style;
   }
 
 }

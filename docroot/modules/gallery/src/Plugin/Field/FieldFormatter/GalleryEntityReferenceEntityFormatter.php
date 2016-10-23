@@ -91,5 +91,13 @@ class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatt
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $elements = parent::settingsForm($form, $form_state);
+
+    return $elements;
+  }
 
 }

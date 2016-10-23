@@ -24,20 +24,6 @@ interface GalleryInterface extends PluginInspectionInterface {
   public function getDescription();
 
   /**
-   * Sets the entity type.
-   *
-   * @param string $entity_type
-   */
-  public function setEntityType($entity_type = NULL);
-
-  /**
-   * Sets the entity view mode.
-   *
-   * @param string $entity_view_mode
-   */
-  public function setEntityViewMode($entity_view_mode = NULL);
-
-  /**
    * Return the renderable array of the gallery plugin.
    *
    * @return array
@@ -52,11 +38,11 @@ interface GalleryInterface extends PluginInspectionInterface {
   public function getItems();
 
   /**
-   * Return the items entity query
+   * Set the renderable array of the gallery items.
    *
-   * @return \Drupal\Core\Entity\Query\QueryFactory
+   * @param array $items
    */
-  public function getQuery();
+  public function setItems($items);
 
   /**
    * Returns the gallery settings form.
