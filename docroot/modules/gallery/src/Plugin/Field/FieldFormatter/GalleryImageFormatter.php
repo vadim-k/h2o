@@ -68,6 +68,10 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
    *   Any third party settings settings.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $image_style_storage
+   *   The image style storage service.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $gallery_style_storage
+   *   The gallery style storage service.
    * @param \Drupal\gallery\GalleryManager $gallery_manager
    *   The gallery manager service.
    */
@@ -147,7 +151,6 @@ class GalleryImageFormatter extends ImageFormatter implements ContainerFactoryPl
 
     return $summary;
   }
-
 
   /**
    * {@inheritdoc}

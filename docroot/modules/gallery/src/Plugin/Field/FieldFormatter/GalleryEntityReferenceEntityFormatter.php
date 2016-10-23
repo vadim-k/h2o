@@ -14,8 +14,11 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceEntityFormatter;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\gallery\GalleryManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +34,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatter implements ContainerFactoryPluginInterface {
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
 
   /**
    * The gallery plugin manager.
@@ -64,12 +74,18 @@ class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatt
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
    *   The entity display repository.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $gallery_style_storage
+   *   The gallery style storage service.
    * @param \Drupal\gallery\GalleryManager $gallery_manager
    *   The gallery manager service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, EntityDisplayRepositoryInterface $entity_display_repository, GalleryManager $gallery_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, EntityDisplayRepositoryInterface $entity_display_repository, AccountInterface $current_user, EntityStorageInterface $gallery_style_storage, GalleryManager $gallery_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $logger_factory, $entity_type_manager, $entity_display_repository);
+    $this->currentUser = $current_user;
     $this->galleryManager = $gallery_manager;
+    $this->galleryStyleStorage = $gallery_style_storage;
   }
 
   /**
@@ -87,6 +103,8 @@ class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatt
       $container->get('logger.factory'),
       $container->get('entity_type.manager'),
       $container->get('entity_display.repository'),
+      $container->get('current_user'),
+      $container->get('entity.manager')->getStorage('gallery_style'),
       $container->get('plugin.manager.gallery')
     );
   }
@@ -94,9 +112,71 @@ class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatt
   /**
    * {@inheritdoc}
    */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $elements = parent::settingsForm($form, $form_state);
+  public static function defaultSettings() {
+    return array(
+      'gallery_style' => '',
+    ) + parent::defaultSettings();
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element = parent::settingsForm($form, $form_state);
+    $gallery_styles = gallery_style_options(FALSE);
+    $description_link = Link::fromTextAndUrl(
+      $this->t('Configure Gallery Styles'),
+      Url::fromRoute('entity.gallery_style.list')
+    );
+    $element['gallery_style'] = array(
+      '#type' => 'select',
+      '#title' => 'Gallery style',
+      '#default_value' => $this->getSetting('gallery_style'),
+      '#empty_option' => t('None'),
+      '#options' => $gallery_styles,
+      '#description' => $description_link->toRenderable() + array(
+        '#access' => $this->currentUser->hasPermission('administer gallery styles'),
+      ),
+    );
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = parent::settingsSummary();
+
+    $gallery_styles = gallery_style_options(FALSE);
+    // Unset possible 'No defined styles' option.
+    unset($gallery_styles['']);
+    $gallery_style_setting = $this->getSetting('gallery_style');
+    if (isset($gallery_styles[$gallery_style_setting])) {
+      $summary[] = t('Gallery style: @style', array('@style' => $gallery_styles[$gallery_style_setting]));
+    }
+    else {
+      $summary[] = t('Gallery style: none');
+    }
+
+    return $summary;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function viewElements(FieldItemListInterface $items, $langcode) {
+    $elements = array();
+    $items = parent::viewElements($items, $langcode);
+    if ($items) {
+      $gallery_style_setting = $this->getSetting('gallery_style');
+      if (!empty($gallery_style_setting)) {
+        $gallery_style = $this->galleryStyleStorage->load($gallery_style_setting);
+        if ($gallery_style) {
+          $this->galleryInstance = $this->galleryManager->createInstance($gallery_style->getStyle(), array('items' => $items));
+          $elements = $this->galleryInstance->build();
+        }
+      }
+    }
     return $elements;
   }
 
