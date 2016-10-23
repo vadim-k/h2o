@@ -71,13 +71,13 @@ class GalleryStyleFormBase extends EntityForm {
       '#disabled' => !$this->entity->isNew(),
     );
 
-    $style_options = $this->galleryManager->getStyles();
-    $style = $this->entity->get('style') ? $this->entity->get('style') : key($style_options);
-    $form['style'] = array(
+    $type_options = $this->galleryManager->getTypes();
+    $type = $this->entity->get('type') ? $this->entity->get('type') : key($type_options);
+    $form['type'] = array(
       '#type' => 'select',
-      '#options' => $style_options,
-      '#title' => $this->t('Style'),
-      '#default_value' => $style,
+      '#options' => $type_options,
+      '#title' => $this->t('Type'),
+      '#default_value' => $type,
       '#required' => TRUE,
       '#ajax' => array(
         'callback' => '::settingsFormCallback',
@@ -93,13 +93,13 @@ class GalleryStyleFormBase extends EntityForm {
     );
 
     $triggering_element = isset($form_state->getTriggeringElement()['#name']) ? $form_state->getTriggeringElement()['#name'] : NULL;
-    if ($triggering_element == 'style') {
-      $style = $form_state->getValue('style');
+    if ($triggering_element == 'type') {
+      $type = $form_state->getValue('type');
     }
 
-    if ($style) {
+    if ($type) {
       $settings = $this->entity->get('settings') ? $this->entity->get('settings') : array();
-      $gallery_plugin_instance = $this->galleryManager->createInstance($style, $settings);
+      $gallery_plugin_instance = $this->galleryManager->createInstance($type, array('settings' => $settings));
       if ($gallery_plugin_instance) {
         $form['settings'] += $gallery_plugin_instance->getSettingsForm();
       }
@@ -109,7 +109,7 @@ class GalleryStyleFormBase extends EntityForm {
   }
 
   /**
-   * Implements callback for Ajax event on style selection.
+   * Implements callback for Ajax event on type selection.
    *
    * @param array $form
    *   From render array.

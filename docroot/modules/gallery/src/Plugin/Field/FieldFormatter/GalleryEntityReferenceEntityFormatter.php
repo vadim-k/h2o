@@ -172,7 +172,15 @@ class GalleryEntityReferenceEntityFormatter extends EntityReferenceEntityFormatt
       if (!empty($gallery_style_setting)) {
         $gallery_style = $this->galleryStyleStorage->load($gallery_style_setting);
         if ($gallery_style) {
-          $this->galleryInstance = $this->galleryManager->createInstance($gallery_style->getStyle(), array('items' => $items));
+          $style_type = $gallery_style->getType();
+          $settings = $gallery_style->get('settings');
+          $style_name = $gallery_style->get('name');
+          $config = array(
+            'items' => $items,
+            'settings' => $settings,
+            'style_name' => $style_name,
+          );
+          $this->galleryInstance = $this->galleryManager->createInstance($style_type, $config);
           $elements = $this->galleryInstance->build();
         }
       }

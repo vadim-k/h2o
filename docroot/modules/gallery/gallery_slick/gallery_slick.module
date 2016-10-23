@@ -19,6 +19,7 @@ function gallery_slick_theme($existing, $type, $theme, $path) {
     'gallery_slick_slider' => array(
       'variables' => array(
         'slides' => array(),
+        'attributes' => array(),
       ),
       'path' => $path,
       'file' => 'gallery_slick.theme.inc',

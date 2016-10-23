@@ -43,18 +43,18 @@ class GalleryManager extends DefaultPluginManager {
   }
 
   /**
-   * Gets an array of gallery styles.
+   * Gets an array of gallery types.
    *
    * @return
-   *   Array of gallery styles.
+   *   Array of gallery types.
    */
-  public function getStyles() {
-    $styles = array();
+  public function getTypes() {
+    $types = array();
     $plugin_definitions = $this->getDefinitions();
     foreach ($plugin_definitions as $key => $plugin_definition) {
-      $styles[$key] = $plugin_definition['label'];
+      $types[$key] = $plugin_definition['label'];
     }
-    return $styles;
+    return $types;
   }
 
 }

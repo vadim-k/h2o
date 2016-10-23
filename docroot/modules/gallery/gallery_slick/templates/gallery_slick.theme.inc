@@ -16,5 +16,6 @@ function template_preprocess_gallery_slick(&$variables) {
   $variables['slider'] = array(
     '#theme' => 'gallery_slick_slider',
     '#slides' => $slides,
+    '#attributes' => $variables['elements']['#slider_attributes'],
   );
 }

@@ -32,7 +32,7 @@ use Drupal\gallery\Entity\GalleryStyleInterface;
 *    config_export = {
  *     "name",
  *     "label",
- *     "style",
+ *     "type",
  *     "settings",
  *   }
  * )
@@ -61,11 +61,11 @@ class GalleryStyle extends ConfigEntityBase implements GalleryStyleInterface {
   public $label;
 
   /**
-   * The gallery style.
+   * The gallery type.
    *
    * @var string
    */
-  public $style;
+  public $type;
 
   /**
    * The gallery settings.
@@ -100,8 +100,8 @@ class GalleryStyle extends ConfigEntityBase implements GalleryStyleInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStyle() {
-    return $this->style;
+  public function getType() {
+    return $this->type;
   }
 
 }

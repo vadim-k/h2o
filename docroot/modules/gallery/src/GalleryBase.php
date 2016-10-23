@@ -4,17 +4,15 @@ namespace Drupal\gallery;
 
 use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Routing\LinkGeneratorTrait;
-use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Field\PluginSettingsBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Defines a base gallery implementation
  *
  */
-class GalleryBase extends PluginBase implements GalleryInterface, ContainerFactoryPluginInterface {
-  use StringTranslationTrait;
+class GalleryBase extends PluginSettingsBase implements GalleryInterface, ContainerFactoryPluginInterface {
   use LinkGeneratorTrait;
 
   /**
@@ -43,7 +41,12 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->setItems();
+    if (!empty($this->configuration['items'])) {
+      $this->setItems($this->configuration['items']);
+    }
+    if (!empty($configuration['settings'])) {
+      $this->setSettings($configuration['settings']);
+    }
   }
 
   /**
@@ -89,9 +92,6 @@ class GalleryBase extends PluginBase implements GalleryInterface, ContainerFacto
    * {@inheritdoc}
    */
   public function setItems($items = array()) {
-    if (!$items) {
-      $items = !empty($this->configuration['items']) ? $this->configuration['items'] : array();
-    }
     $this->items = $items;
   }
 

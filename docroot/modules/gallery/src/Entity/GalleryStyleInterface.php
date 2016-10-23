@@ -21,11 +21,11 @@ interface GalleryStyleInterface extends ConfigEntityInterface {
   public function getSettingsValue($key);
 
   /**
-   * Gets the gallery style.
+   * Gets the gallery type.
    *
    * @return string
-   *   The gallery style.
+   *   The gallery type.
    */
-  public function getStyle();
+  public function getType();
 
 }
